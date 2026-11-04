@@ -1,0 +1,402 @@
+{
+  "snapshot": "August 2026",
+  "observations_through": "June 2026",
+  "edition": "26.15.08.001",
+  "category": "VK2 · two-room reference apartment (2+kk / 2+1)",
+  "benchmark": "Unweighted median of the 48 cadastral-area reference estimates, not the median of all Brno rental listings.",
+  "benchmark_rent": 301.5,
+  "band_breaks_pct": [
+    -15,
+    -5,
+    5,
+    15
+  ],
+  "source_url": "https://mf.gov.cz/cs/rozpoctova-politika/podpora-projektoveho-rizeni/cenova-mapa/cenova-mapa-infografika",
+  "source_sha256": "b8e780c81c6a2706a53b63a30db1301688f927fded33fb0f2218f60a26fba185",
+  "areas": {
+    "612006": {
+      "name": "Bohunice",
+      "reference_rent": 310.0,
+      "coverage_class": 5,
+      "interval_low": 280.0,
+      "interval_high": 344.0,
+      "difference_pct": 2.819237147595355
+    },
+    "608505": {
+      "name": "Bosonohy",
+      "reference_rent": 279.0,
+      "coverage_class": 1,
+      "interval_low": 239.0,
+      "interval_high": 327.0,
+      "difference_pct": -7.462686567164178
+    },
+    "612227": {
+      "name": "Brněnské Ivanovice",
+      "reference_rent": 289.0,
+      "coverage_class": 1,
+      "interval_low": 264.0,
+      "interval_high": 315.0,
+      "difference_pct": -4.145936981757881
+    },
+    "611778": {
+      "name": "Bystrc",
+      "reference_rent": 314.0,
+      "coverage_class": 5,
+      "interval_low": 304.0,
+      "interval_high": 325.0,
+      "difference_pct": 4.1459369817578695
+    },
+    "654132": {
+      "name": "Chrlice",
+      "reference_rent": 281.0,
+      "coverage_class": 2,
+      "interval_low": 225.0,
+      "interval_high": 353.0,
+      "difference_pct": -6.799336650082921
+    },
+    "612111": {
+      "name": "Dolní Heršpice",
+      "reference_rent": 269.0,
+      "coverage_class": 4,
+      "interval_low": 252.0,
+      "interval_high": 288.0,
+      "difference_pct": -10.779436152570476
+    },
+    "633895": {
+      "name": "Dvorska",
+      "reference_rent": 293.0,
+      "coverage_class": 1,
+      "interval_low": 274.0,
+      "interval_high": 313.0,
+      "difference_pct": -2.819237147595355
+    },
+    "612243": {
+      "name": "Holásky",
+      "reference_rent": 286.0,
+      "coverage_class": 1,
+      "interval_low": 259.0,
+      "interval_high": 316.0,
+      "difference_pct": -5.140961857379766
+    },
+    "612065": {
+      "name": "Horní Heršpice",
+      "reference_rent": 294.0,
+      "coverage_class": 5,
+      "interval_low": 281.0,
+      "interval_high": 308.0,
+      "difference_pct": -2.487562189054726
+    },
+    "610844": {
+      "name": "Husovice",
+      "reference_rent": 295.0,
+      "coverage_class": 5,
+      "interval_low": 285.0,
+      "interval_high": 306.0,
+      "difference_pct": -2.1558872305140975
+    },
+    "655856": {
+      "name": "Ivanovice",
+      "reference_rent": 316.0,
+      "coverage_class": 2,
+      "interval_low": 292.0,
+      "interval_high": 341.0,
+      "difference_pct": 4.809286898839127
+    },
+    "658201": {
+      "name": "Jehnice",
+      "reference_rent": 287.0,
+      "coverage_class": 1,
+      "interval_low": 268.0,
+      "interval_high": 308.0,
+      "difference_pct": -4.809286898839138
+    },
+    "610542": {
+      "name": "Jundrov",
+      "reference_rent": 312.0,
+      "coverage_class": 4,
+      "interval_low": 286.0,
+      "interval_high": 340.0,
+      "difference_pct": 3.482587064676612
+    },
+    "611905": {
+      "name": "Kníničky",
+      "reference_rent": 274.0,
+      "coverage_class": 1,
+      "interval_low": 247.0,
+      "interval_high": 303.0,
+      "difference_pct": -9.121061359867333
+    },
+    "610313": {
+      "name": "Kohoutovice",
+      "reference_rent": 295.0,
+      "coverage_class": 5,
+      "interval_low": 269.0,
+      "interval_high": 325.0,
+      "difference_pct": -2.1558872305140975
+    },
+    "611026": {
+      "name": "Komárov",
+      "reference_rent": 308.0,
+      "coverage_class": 4,
+      "interval_low": 281.0,
+      "interval_high": 338.0,
+      "difference_pct": 2.1558872305140975
+    },
+    "610585": {
+      "name": "Komín",
+      "reference_rent": 269.0,
+      "coverage_class": 5,
+      "interval_low": 248.0,
+      "interval_high": 291.0,
+      "difference_pct": -10.779436152570476
+    },
+    "611484": {
+      "name": "Královo Pole",
+      "reference_rent": 315.0,
+      "coverage_class": 5,
+      "interval_low": 306.0,
+      "interval_high": 324.0,
+      "difference_pct": 4.477611940298498
+    },
+    "610887": {
+      "name": "Lesná",
+      "reference_rent": 312.0,
+      "coverage_class": 5,
+      "interval_low": 299.0,
+      "interval_high": 326.0,
+      "difference_pct": 3.482587064676612
+    },
+    "612405": {
+      "name": "Líšeň",
+      "reference_rent": 305.0,
+      "coverage_class": 5,
+      "interval_low": 295.0,
+      "interval_high": 315.0,
+      "difference_pct": 1.1608623548922115
+    },
+    "612499": {
+      "name": "Maloměřice",
+      "reference_rent": 284.0,
+      "coverage_class": 5,
+      "interval_low": 269.0,
+      "interval_high": 300.0,
+      "difference_pct": -5.8043117744610235
+    },
+    "611743": {
+      "name": "Medlánky",
+      "reference_rent": 317.0,
+      "coverage_class": 5,
+      "interval_low": 304.0,
+      "interval_high": 332.0,
+      "difference_pct": 5.140961857379778
+    },
+    "611701": {
+      "name": "Mokrá Hora",
+      "reference_rent": 298.0,
+      "coverage_class": 1,
+      "interval_low": 274.0,
+      "interval_high": 323.0,
+      "difference_pct": -1.1608623548922004
+    },
+    "610003": {
+      "name": "Město Brno",
+      "reference_rent": 324.0,
+      "coverage_class": 5,
+      "interval_low": 310.0,
+      "interval_high": 338.0,
+      "difference_pct": 7.462686567164178
+    },
+    "610283": {
+      "name": "Nový Lískovec",
+      "reference_rent": 276.0,
+      "coverage_class": 5,
+      "interval_low": 254.0,
+      "interval_high": 300.0,
+      "difference_pct": -8.457711442786064
+    },
+    "612553": {
+      "name": "Obřany",
+      "reference_rent": 291.0,
+      "coverage_class": 4,
+      "interval_low": 268.0,
+      "interval_high": 317.0,
+      "difference_pct": -3.482587064676612
+    },
+    "712680": {
+      "name": "Ořešín",
+      "reference_rent": 285.0,
+      "coverage_class": 1,
+      "interval_low": 267.0,
+      "interval_high": 303.0,
+      "difference_pct": -5.472636815920396
+    },
+    "610208": {
+      "name": "Pisárky",
+      "reference_rent": 286.0,
+      "coverage_class": 5,
+      "interval_low": 264.0,
+      "interval_high": 310.0,
+      "difference_pct": -5.140961857379766
+    },
+    "611379": {
+      "name": "Ponava",
+      "reference_rent": 312.0,
+      "coverage_class": 5,
+      "interval_low": 301.0,
+      "interval_high": 323.0,
+      "difference_pct": 3.482587064676612
+    },
+    "612146": {
+      "name": "Přízřenice",
+      "reference_rent": 306.0,
+      "coverage_class": 2,
+      "interval_low": 288.0,
+      "interval_high": 325.0,
+      "difference_pct": 1.4925373134328401
+    },
+    "611565": {
+      "name": "Sadová",
+      "reference_rent": 375.0,
+      "coverage_class": 5,
+      "interval_low": 351.0,
+      "interval_high": 401.0,
+      "difference_pct": 24.378109452736307
+    },
+    "612286": {
+      "name": "Slatina",
+      "reference_rent": 317.0,
+      "coverage_class": 5,
+      "interval_low": 305.0,
+      "interval_high": 330.0,
+      "difference_pct": 5.140961857379778
+    },
+    "751910": {
+      "name": "Soběšice",
+      "reference_rent": 270.0,
+      "coverage_class": 2,
+      "interval_low": 252.0,
+      "interval_high": 289.0,
+      "difference_pct": -10.447761194029848
+    },
+    "610089": {
+      "name": "Staré Brno",
+      "reference_rent": 321.0,
+      "coverage_class": 5,
+      "interval_low": 310.0,
+      "interval_high": 332.0,
+      "difference_pct": 6.467661691542292
+    },
+    "612014": {
+      "name": "Starý Lískovec",
+      "reference_rent": 315.0,
+      "coverage_class": 5,
+      "interval_low": 293.0,
+      "interval_high": 339.0,
+      "difference_pct": 4.477611940298498
+    },
+    "610330": {
+      "name": "Stránice",
+      "reference_rent": 316.0,
+      "coverage_class": 5,
+      "interval_low": 292.0,
+      "interval_high": 342.0,
+      "difference_pct": 4.809286898839127
+    },
+    "610950": {
+      "name": "Trnitá",
+      "reference_rent": 313.0,
+      "coverage_class": 5,
+      "interval_low": 302.0,
+      "interval_high": 325.0,
+      "difference_pct": 3.814262023217241
+    },
+    "612171": {
+      "name": "Tuřany",
+      "reference_rent": 293.0,
+      "coverage_class": 2,
+      "interval_low": 263.0,
+      "interval_high": 326.0,
+      "difference_pct": -2.819237147595355
+    },
+    "610372": {
+      "name": "Veveří",
+      "reference_rent": 305.0,
+      "coverage_class": 5,
+      "interval_low": 294.0,
+      "interval_high": 316.0,
+      "difference_pct": 1.1608623548922115
+    },
+    "610704": {
+      "name": "Zábrdovice",
+      "reference_rent": 307.0,
+      "coverage_class": 5,
+      "interval_low": 298.0,
+      "interval_high": 316.0,
+      "difference_pct": 1.8242122719734688
+    },
+    "775550": {
+      "name": "Útěchov u Brna",
+      "reference_rent": 264.0,
+      "coverage_class": 1,
+      "interval_low": 241.0,
+      "interval_high": 289.0,
+      "difference_pct": -12.43781094527363
+    },
+    "611263": {
+      "name": "Černovice",
+      "reference_rent": 315.0,
+      "coverage_class": 5,
+      "interval_low": 299.0,
+      "interval_high": 331.0,
+      "difference_pct": 4.477611940298498
+    },
+    "610771": {
+      "name": "Černá Pole",
+      "reference_rent": 293.0,
+      "coverage_class": 5,
+      "interval_low": 282.0,
+      "interval_high": 305.0,
+      "difference_pct": -2.819237147595355
+    },
+    "611646": {
+      "name": "Řečkovice",
+      "reference_rent": 304.0,
+      "coverage_class": 5,
+      "interval_low": 293.0,
+      "interval_high": 316.0,
+      "difference_pct": 0.8291873963515828
+    },
+    "610186": {
+      "name": "Štýřice",
+      "reference_rent": 300.0,
+      "coverage_class": 5,
+      "interval_low": 286.0,
+      "interval_high": 316.0,
+      "difference_pct": -0.497512437810943
+    },
+    "610470": {
+      "name": "Žabovřesky",
+      "reference_rent": 303.0,
+      "coverage_class": 5,
+      "interval_low": 291.0,
+      "interval_high": 316.0,
+      "difference_pct": 0.4975124378109541
+    },
+    "795674": {
+      "name": "Žebětín",
+      "reference_rent": 319.0,
+      "coverage_class": 5,
+      "interval_low": 305.0,
+      "interval_high": 333.0,
+      "difference_pct": 5.804311774461035
+    },
+    "611115": {
+      "name": "Židenice",
+      "reference_rent": 297.0,
+      "coverage_class": 5,
+      "interval_low": 287.0,
+      "interval_high": 307.0,
+      "difference_pct": -1.4925373134328401
+    }
+  }
+}

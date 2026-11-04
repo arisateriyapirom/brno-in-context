@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Brno in Context. Explore its neighbourhoods, everyday life and the trade-offs that make a place feel like home.">
+    <title>Brno in Context</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="home.css?v=20261103-square">
+    <script defer src="vendor/d3.v7.min.js"></script>
+    <script defer src="home-globe.js?v=20261103-thin"></script>
+</head>
+<body class="home-page">
+    <header class="site-header home-header">
+        <a class="home-wordmark" href="index.html" aria-label="Home">BRNO<span> / A PLACE IN THE WORLD</span></a>
+        <nav class="top-nav" aria-label="Main navigation">
+            <a href="index.html" class="active-page" aria-current="page">Home</a><span aria-hidden="true">|</span>
+            <a href="brno-livability.html">Brno Livability</a><span aria-hidden="true">|</span>
+            <a href="life-in-brno.html">Life in Brno</a><span aria-hidden="true">|</span>
+            <a href="contacts.html">Contacts</a>
+        </nav>
+    </header>
+    <main class="home-hero">
+        <section class="home-intro" aria-labelledby="home-title">
+            <h1 id="home-title">Brno in Context</h1>
+            <p class="home-description"><em>Exploring the city through data, places, and everyday life.</em></p>
+        </section>
+        <section class="home-journey" aria-label="From the world to Brno">
+            <div id="globe-stage" class="globe-stage">
+                <canvas id="home-globe" role="img" aria-label="A rotating globe zooms from the world to Europe, the Czech Republic, and Brno.">Brno is in the Czech Republic, in central Europe.</canvas>
+                <div id="brno-pin" class="brno-pin" hidden>
+                    <svg width="30" height="39" viewBox="0 0 30 39" aria-hidden="true"><path d="M15 38C12 33 1 22 1 15a14 14 0 0 1 28 0c0 7-11 18-14 23Z" fill="#c93c32" stroke="#f5f3ef" stroke-width="2"/><circle cx="15" cy="15" r="4.5" fill="#f5f3ef"/></svg>
+                    <span>Brno<small>49.1951° N · 16.6068° E</small></span>
+                </div>
+                <p id="globe-fallback" hidden>Brno, Czech Republic<br><small>The globe could not load. You can still explore the pages on the left.</small></p>
+            </div>
+            <div class="journey-footer">
+                <ol class="journey-steps" aria-label="Journey stages"><li data-stage="0" class="is-current">World</li><li data-stage="1">Europe</li><li data-stage="2">Czech Republic</li><li data-stage="3">Brno</li></ol>
+                <div class="journey-controls"><button id="globe-pause" type="button" disabled>Pause</button><button id="globe-replay" type="button" disabled>Replay</button><button id="globe-skip" type="button" disabled>Go to Brno</button></div>
+            </div>
+            <p id="globe-status" class="home-sr-only" role="status" aria-live="polite">Loading the globe.</p>
+        </section>
+        <div class="home-links">
+            <a href="brno-livability.html">Explore the neighbourhoods <span aria-hidden="true">↗</span></a>
+            <a href="life-in-brno.html">See life in Brno <span aria-hidden="true">↗</span></a>
+        </div>
+    </main>
+    <footer class="home-footer"><span>A work in progress. A place to explore.</span><a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Map: Natural Earth</a></footer>
+</body>
+</html>

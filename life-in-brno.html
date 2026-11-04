@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life in Brno · Brno in Pictures</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="life-in-brno.css?v=20261103-carousel">
+</head>
+<body class="journal-page">
+    <header class="site-header">
+        <h1>Life in Brno<span class="title-tagline">☆ A glimpse of everyday life in Brno ☆</span></h1>
+        <nav class="top-nav" aria-label="Main navigation">
+            <a href="index.html">Home</a><span aria-hidden="true">|</span>
+            <a href="brno-livability.html">Brno Livability</a><span aria-hidden="true">|</span>
+            <a href="life-in-brno.html" class="active-page" aria-current="page">Life in Brno</a><span aria-hidden="true">|</span>
+            <a href="contacts.html">Contacts</a>
+        </nav>
+    </header>
+
+    <main class="journal">
+        <section class="journal-intro" aria-labelledby="journal-title">
+            <div>
+                <h2 id="journal-title">Brno in Pictures</h2>
+                <p>Understanding Brno through the people, places and routines that shape daily life</p>
+            </div>
+            <a class="journal-map-link" href="brno-livability.html">Explore the livability map <span aria-hidden="true">↗</span></a>
+        </section>
+
+    
+
+        <section class="journal-browse" aria-label="Browse the journal">
+            <div class="journal-filters" role="group" aria-label="Photo categories">
+                <button type="button" data-category="Overall" class="is-active" aria-pressed="true">Overall</button>
+                <button type="button" data-category="Streets" aria-pressed="false">Streets</button>
+                <button type="button" data-category="Arts" aria-pressed="false">Arts</button>
+                <button type="button" data-category="Life Here" aria-pressed="false">Life Here</button>
+            </div>
+            <div class="journal-area-filter">
+                <label for="journal-area">Cadastral area</label>
+                <select id="journal-area"><option value="">All areas</option></select>
+            </div>
+        </section>
+        <div class="journal-grid-heading">
+            <p id="journal-count" role="status" aria-live="polite"></p>
+            <p>Click on a photo to read its story and see where it's located.</p>
+        </div>
+        <div id="journal-grid" class="journal-grid"></div>
+        <div id="journal-empty" class="journal-empty" hidden>
+            <h3>No entries in this selection yet.</h3>
+            <p>Try another category or cadastral area.</p>
+            <button id="journal-reset" type="button">Show all entries</button>
+        </div>
+        <noscript><p>Enable JavaScript to browse this draft photo journal.</p></noscript>
+        <footer class="journal-footer">One person's perspective, one moment at a time.</footer>
+    </main>
+
+    <dialog id="journal-dialog" class="journal-dialog" aria-labelledby="entry-title">
+        <form method="dialog"><button class="journal-close" aria-label="Close photo story">×</button></form>
+        <div class="journal-folder-tabs" role="tablist" aria-label="Photo details">
+            <button id="entry-story-tab" type="button" role="tab" aria-controls="entry-story-panel" aria-selected="true">Story</button>
+            <button id="entry-location-tab" type="button" role="tab" aria-controls="entry-location-panel" aria-selected="false" tabindex="-1">Location</button>
+        </div>
+        <div id="entry-story-panel" class="journal-story" role="tabpanel" aria-labelledby="entry-story-tab">
+            <div id="entry-photo" class="journal-story-photo"></div>
+            <div class="journal-story-copy">
+                <p id="entry-status" class="journal-eyebrow"></p>
+                <h2 id="entry-title"></h2>
+                <p id="entry-subtitle" class="journal-story-subtitle" hidden></p>
+                <p id="entry-area" class="journal-story-area"></p>
+                <div id="entry-tags" class="journal-tags"></div>
+                <p id="entry-caption"></p>
+                <p id="entry-date" class="journal-story-date"></p>
+            </div>
+        </div>
+        <div id="entry-location-panel" class="journal-location" role="tabpanel" aria-labelledby="entry-location-tab" hidden>
+            <h2 id="entry-location-title">Location in Brno</h2>
+            <p id="entry-location-note" role="status" aria-live="polite"></p>
+            <div id="entry-map" aria-label="Map showing the photo location in Brno"></div>
+            <button id="entry-map-retry" type="button" hidden>Retry map</button>
+        </div>
+    </dialog>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="life-in-brno.js?v=20261103-published"></script>
+</body>
+</html>

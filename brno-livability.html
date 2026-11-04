@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Brno Livability</title>
+
+    <!-- Leaflet CSS -->
+    <link 
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- Our own CSS -->
+    <link rel="stylesheet" href="style.css?v=20261103-data-text">
+
+</head>
+
+<body class="livability-page">
+    <header class="site-header">
+        <h1>
+            Brno Livability
+            <span class="title-tagline">
+                ☆ A guide to better understanding your neighborhood ☆
+            </span>
+        </h1>
+        <nav class="top-nav">
+            <a href="index.html">Home</a>
+            <span>|</span>
+             <a href="brno-livability.html" class="active-page">Brno Livability</a>
+            <span>|</span>
+            <a href="life-in-brno.html">Life in Brno</a>
+            <span>|</span>
+            <a href="contacts.html">Contacts</a>
+        </nav>
+    </header>
+
+   
+    
+    <div class="livability-layout">
+
+        <!-- LEFT COLUMN -->
+        <div class="sidebar" tabindex="0" role="region" aria-label="Livability controls and results">
+
+            <form id="area-search-form" class="area-search" role="search">
+                <label for="area-search">Find a cadastral area</label>
+                <div class="search-controls">
+                    <input id="area-search" type="search" placeholder="e.g. Žabovřesky" autocomplete="off"
+                        aria-describedby="search-status" aria-controls="search-results" disabled>
+                    <button id="search-submit" type="submit" disabled>Find</button>
+                </div>
+                <p id="search-status" class="search-status" role="status">Loading areas…</p>
+                <ul id="search-results" class="search-results" aria-label="Matching cadastral areas" hidden></ul>
+            </form>
+
+            <details class="walking-explorer" open>
+                <summary>Walk from an address or pin</summary>
+                <form id="address-form">
+                    <label for="address-input">Address in Brno</label>
+                    <div class="search-controls"><input id="address-input" type="search" placeholder="Street and house number" autocomplete="off"><button id="address-submit" type="submit">Search</button></div>
+                </form>
+                <p class="search-status">Address searches use <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>. Pin routing stays on your device.</p>
+                <p id="address-status" class="search-status" role="status"></p>
+                <ul id="address-results" class="address-results"></ul>
+                <div class="pin-actions"><button id="drop-pin" type="button" aria-pressed="false">Drop a pin</button></div>
+                <p id="pin-status" class="search-status" role="status"></p>
+            </details>
+
+            <div class="filters">
+
+                <!-- Row 1 -->
+                <div class="filter-row">
+                    <button
+                        class="active"
+                        data-factor="overall_score"
+                        data-label="Overall Livability Score">
+                        Overall Livability
+                    </button>
+                    <button data-factor="affordability" data-label="Relative Rental Cost">Affordability</button>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="filter-row">
+                    <button
+                        data-factor="tree_score"
+                        data-label="Tree Density">
+                        Trees
+                    </button>
+
+                    <button
+                        data-factor="park_score"
+                        data-label="Park Coverage">
+                        Parks
+                    </button>
+
+                    <button
+                        data-factor="transit_cov_score"
+                        data-label="Public Transportation Stop Coverage">
+                        Transit
+                    </button>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="filter-row">
+                    <button
+                        data-factor="cycling_dens_score"
+                        data-label="Cycling Route Density">
+                        Cycling
+                    </button>
+
+                    <button
+                        data-factor="socialservice_cov_score"
+                        data-label="Social Service Coverage">
+                        Social Service
+                    </button>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="filter-row">
+                    <button
+                        data-factor="food_cov_score"
+                        data-label="Cafe & Restaurant Coverage">
+                        Cafe & Restaurant
+                    </button>
+
+                    <button
+                        data-factor="edu_score"
+                        data-label="Formal Education Coverage">
+                        Formal Education
+                    </button>
+
+                    <button data-factor="learning_cov_score" data-label="Learning Coverage">Learning</button>
+                    <button data-factor="grocery_cov_score" data-label="Grocery Store Coverage">Groceries</button>
+                    <button data-factor="fitness_cov_score" data-label="Fitness &amp; Wellness Coverage">Fitness &amp; wellness</button>
+                    <button data-factor="cultural_cov_score" data-label="Cultural Coverage">Culture</button>
+                </div>
+
+            </div>
+
+            <details class="priorities">
+                <summary>Your Priority <span class="priority-prompt">Which factors matter to you most?</span></summary>
+                <p>Increase formal education for school access, or cafés and culture for places to go out. These choices change the overall score.</p>
+                <p class="priority-guide">Off · Standard · More important · Most important</p>
+                <div id="priority-controls"></div>
+                <button id="reset-priorities" type="button" disabled>Equal weights</button>
+                <p id="priority-status" role="status" aria-live="polite">Loading priorities…</p>
+            </details>
+
+            <section id="overall-card" class="overall-card" aria-labelledby="overall-area-name">
+                <div class="comparison-heading">
+                    <h3 id="overall-area-name">Explore an area</h3>
+                    <button id="clear-selection" type="button" hidden>Clear</button>
+                    <button id="clear-pin" type="button" hidden>Clear location</button>
+                </div>
+                <div id="area-results">
+                <p id="selection-status" class="selection-status" role="status">Click an area or search by name. Select a second area to compare.</p>
+                <div id="selected-areas" class="selected-areas"></div>
+                <div id="score-comparison"></div>
+                </div>
+                <div id="location-results" hidden>
+                <p id="walk-origin"></p>
+                <p id="walk-status" class="search-status" role="status">Search an address or drop a pin to explore walking routes.</p>
+                <button id="retry-routing" type="button" hidden>Try routing again</button>
+                <div id="walk-results"></div>
+                <p id="route-caption" class="search-status"></p>
+                <p class="search-status">Estimated walking routes include steps and approximate connections up to 100 m. Entrances and barriers may be incomplete; these are not verified accessible routes.</p>
+                </div>
+            </section>
+
+
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div class="map-column">
+
+            <div class="map-topbar">
+                <p id="map-status" class="map-status" role="status" aria-live="polite">Loading walking-network results…</p>
+                <button id="about-data-toggle" type="button" aria-expanded="false" aria-controls="about-data-panel">About the data</button>
+            </div>
+            <aside id="about-data-panel" class="about-data-panel" aria-labelledby="about-data-title" hidden>
+                <div class="about-data-heading"><h2 id="about-data-title">About the data</h2><button id="about-data-close" type="button" aria-label="Close About the data">×</button></div>
+                <p>A work-in-progress comparison of Brno’s 48 cadastral areas. It helps explore trade-offs, rather than define one best place to live.</p>
+                <h3>Where the data comes from</h3>
+                <p>Cadastral boundaries, trees, parks, cycling routes and the original amenity layers come from <a href="https://gis.brno.cz/ost/edas/public/" target="_blank" rel="noopener">Brno’s official publicly accessible data portal</a>. Additional learning, grocery, culture and fitness locations, plus the walking network, come from OpenStreetMap. These are saved datasets, not live listings; their dates and completeness vary.</p>
+                <h3>Walking access</h3>
+                <p>Coverage estimates the share of <strong>land area</strong> within walking distance of at least one destination—not the share of residents. It uses 25 m samples and paths in the supplied network.</p>
+                <ul><li>Transit and social services: 400 m</li><li>Cafés/restaurants and groceries: 500 m</li><li>Learning and fitness/wellness: 800 m</li><li>Culture: 1,000 m</li><li>Education: kindergarten 800 m, school/college 1,500 m, university 2,000 m</li></ul>
+                <p>Connections to paths can be up to 100 m and count toward distance. They may cross unmapped obstacles. Steps are included; this is not wheelchair routing. Opening hours, capacity and entrances are not verified. Address/pin results show the nearest two reachable destinations per category, within a 5 km search limit.</p>
+                <h3>How scores work</h3>
+                <p>Eleven factors start equally weighted. “Your Priority” changes their contribution to the overall score; missing scores are omitted. Trees, parks and cycling retain their original density or area measures.</p>
+                <p>Education combines kindergarten (50%), school/college (35%) and university (15%) coverage. Social-service coverage is scaled against the highest-coverage area. These formulas were inferred from the original project and retained for this prototype.</p>
+                <h3>Fitness and school proximity</h3>
+                <p>Fitness locations within 100 m of the existing school points are excluded. All other supplied fitness records are retained, regardless of access tags. This approximates school overlap and does not confirm public access.</p>
+                <h3>Relative rental cost</h3>
+                <p><strong>August 2026 snapshot</strong> from the Czech Ministry of Finance, using data through June 2026. Figures are modeled reference rents for existing two-room apartments (2+kk / 2+1), in Kč/m²/month, excluding utilities and service charges—not average asking rents.</p>
+                <p>Cost bands compare each area with the median of 48 area estimates. They are project-defined and remain separate from overall livability scores. Small differences may fall within model uncertainty.</p>
+                <p class="about-data-links"><a href="https://gis.brno.cz/ost/edas/public/" target="_blank" rel="noopener">Brno public data</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · <a href="https://mf.gov.cz/cs/rozpoctova-politika/podpora-projektoveho-rizeni/cenova-mapa/cenova-mapa-infografika" target="_blank" rel="noopener">Ministry rental data</a> · <a href="contacts.html">Share feedback</a></p>
+            </aside>
+
+            <div id="map"></div>
+
+            <div class="map-footer">
+                <!-- DESCRIPTION AREA -->
+            <div class="factor-info">
+
+                <h2 id="map-title">
+                    Overall Livability Score
+                </h2>
+
+                <p id="factor-description">
+                    An average of eleven factors weighted by your priorities. All factors start equally
+                    weighted; missing scores are omitted. Access to services is measured along the walking network.
+                </p>
+
+                <details class="method-note">
+                    <summary>How walking coverage is estimated</summary>
+                    <p>Coverage is estimated across land area using 25 m samples and routes
+                        along streets and paths. Connections to the nearest path, up to 100 m,
+                        count toward the walking distance. Locations farther from a path count
+                        as unserved. Connections may cross unmapped obstacles, and entrances
+                        have not been verified. Steps are included.</p>
+                    <p>Tree density, park coverage and cycling density retain their original
+                        measurements. Education categories with no coverage receive zero.</p>
+                </details>
+
+            </div>
+                <div class="map-footer-controls">
+            <div id="location-controls" class="location-controls" hidden>
+                <label><input id="show-locations" type="checkbox" checked>
+                    <span id="location-label">Show locations</span></label>
+                <div id="location-legend" class="location-legend"></div>
+                <p id="location-status" role="status" aria-live="polite"></p>
+                <button id="retry-locations" type="button" hidden>Retry locations</button>
+            </div>
+
+            <div id="score-legend" class="legend-group" hidden>
+
+                <div class="legend-scale">
+
+                    <div class="legend-group-color">
+                        <span class="legend-square legend-1"></span>
+                        <span class="legend-square legend-1"></span>
+                        <span class="legend-square legend-1"></span>
+                        <span class="legend-square legend-1"></span>
+                    </div>
+
+                    <div class="legend-group-color">
+                        <span class="legend-square legend-2"></span>
+                        <span class="legend-square legend-2"></span>
+                        <span class="legend-square legend-2"></span>
+                        <span class="legend-square legend-2"></span>
+                    </div>
+
+                    <div class="legend-group-color">
+                        <span class="legend-square legend-3"></span>
+                        <span class="legend-square legend-3"></span>
+                        <span class="legend-square legend-3"></span>
+                        <span class="legend-square legend-3"></span>
+                    </div>
+
+                    <div class="legend-group-color">
+                        <span class="legend-square legend-4"></span>
+                        <span class="legend-square legend-4"></span>
+                        <span class="legend-square legend-4"></span>
+                        <span class="legend-square legend-4"></span>
+                    </div>
+
+                    <div class="legend-group-color">
+                        <span class="legend-square legend-5"></span>
+                        <span class="legend-square legend-5"></span>
+                        <span class="legend-square legend-5"></span>
+                        <span class="legend-square legend-5"></span>
+                    </div>
+
+                </div>
+
+                <div class="legend-labels">
+                    <span>Very low</span>
+                    <span>Low</span>
+                    <span>Moderate</span>
+                    <span>High</span>
+                    <span>Very High</span>
+                </div>
+
+                <div class="legend-no-data"><span></span> No data</div>
+
+            </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Leaflet JavaScript -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    <!-- Our JavaScript -->
+    <script src="about-data.js"></script>
+    <script src="factor-locations.js"></script>
+    <script src="walking-explorer.js"></script>
+    <script src="rent-comparison.js?v=20261103-rent-detail"></script>
+    <script src="script.js?v=20261103-rent-detail"></script>
+
+</body>
+
+</html>

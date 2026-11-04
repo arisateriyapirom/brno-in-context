@@ -1,0 +1,8 @@
+# Local source data, QGIS projects, original media and analysis tools.
+/_local-only/
+
+# macOS and Python working files.
+.DS_Store
+**/.DS_Store
+__pycache__/
+*.py[cod]
