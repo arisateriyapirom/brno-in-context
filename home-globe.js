@@ -114,7 +114,11 @@ async function startHomeGlobe() {
         new ResizeObserver(resize).observe(stage);
         const titleBlock=document.querySelector('.home-intro');
         if(titleBlock){
-            const matchTitleHeight=()=>{stage.style.height=`${titleBlock.getBoundingClientRect().height}px`;};
+            const matchTitleHeight=()=>{
+                const size=`${titleBlock.getBoundingClientRect().height}px`;
+                stage.style.height=size;
+                stage.style.setProperty('--globe-size',size);
+            };
             new ResizeObserver(matchTitleHeight).observe(titleBlock);
             matchTitleHeight();
         }
