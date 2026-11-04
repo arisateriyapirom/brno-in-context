@@ -47,20 +47,22 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
         worker=new Worker('routing-worker.js');
         worker.onmessage=({data})=>{
             if(data.id!==requestId)return;
+            status.setAttribute('aria-busy','false');
             if(data.error){status.textContent=data.error;retry.hidden=false;return;}
             routeResult=data.result;
             status.textContent='The two closest reachable destinations per category, within 5 km. Select a destination to show its route.';
             retry.hidden=true;render();
         };
-        worker.onerror=()=>{worker.terminate();worker=null;status.textContent='Walking routes could not be calculated. Try again.';retry.hidden=false;};
+        worker.onerror=()=>{status.setAttribute('aria-busy','false');worker.terminate();worker=null;status.textContent='Walking routes could not be calculated. Try again.';retry.hidden=false;};
     }
     function calculate(){
         if(!origin)return;
         routeResult=null;clearRoute();results.innerHTML='';document.getElementById('route-caption').textContent='';retry.hidden=true;
+        status.setAttribute('aria-busy','true');
         status.textContent='Loading the walking network and calculating routes…';
         const id=++requestId;
         try{startWorker();worker.postMessage({id,point:[origin.lng,origin.lat]});}
-        catch(error){status.textContent='Routing is unavailable in this browser. Please try a browser with Web Worker support.';retry.hidden=false;}
+        catch(error){status.setAttribute('aria-busy','false');status.textContent='Routing is unavailable in this browser. Please try a browser with Web Worker support.';retry.hidden=false;}
     }
     function setOrigin(point,label='Dropped pin'){
         setPinMode(false);origin={lat:point.lat,lng:point.lng};
@@ -82,6 +84,7 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
     },true);
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&pinMode){setPinMode(false);pinStatus.textContent='Pin placement cancelled.';}});
     clearButton.addEventListener('click',()=>{
+        status.setAttribute('aria-busy','false');
         ++requestId;origin=null;routeResult=null;setPinMode(false);clearRoute();
         if(pin){map.removeLayer(pin);pin=null;}results.innerHTML='';clearButton.hidden=true;retry.hidden=true;
         document.getElementById('walk-origin').textContent='';document.getElementById('route-caption').textContent='';

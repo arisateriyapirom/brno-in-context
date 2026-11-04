@@ -28,6 +28,14 @@ For local preview, run `python3 -m http.server 8000` here and open
 `http://localhost:8000/`. Data requests require HTTP(S), rather than opening
 HTML directly with `file://`.
 
+## Mobile layout
+
+At widths of 760 px or less, navigation collapses into a menu and the livability
+map uses an expandable bottom panel. Search, factors, priorities and map details
+open in separate panels. Select an area, then use “Compare with another area”
+to compare two places. Journal photos support swiping and use smaller image
+files on phones. Wider screens retain the desktop layout and original photos.
+
 ## Local source archive
 
 `_local-only/README.md` explains the archive and how to restore files for

@@ -165,6 +165,7 @@ function refreshSelectionStyles() {
 }
 
 function renderComparison() {
+    globalThis.BrnoMobile?.sync();
     const exploreLocation = locationMode && currentFactor !== 'affordability';
     document.getElementById('area-results').hidden = exploreLocation;
     document.getElementById('location-results').hidden = !exploreLocation;
@@ -194,7 +195,11 @@ function renderComparison() {
         return;
     }
     const headers = areas.map((p, i) => `<th scope="col" class="selection-${i}">${i === 0 ? 'A' : 'B'} · ${escapeHtml(p.Name)}</th>`).join('');
-    const rows = scoreRows.map(([field, label]) => {
+    const orderedRows = globalThis.BrnoMobile?.active ? [...scoreRows].sort(([a],[b]) => {
+        const priority = field => field === 'overall_score' ? 100 : field === currentFactor ? 90 : factorWeights[field];
+        return priority(b) - priority(a);
+    }) : scoreRows;
+    const rows = orderedRows.map(([field, label]) => {
         const values = areas.map(p => factorScore(p, field));
         const rounded = values.map(v => Number.isFinite(v) ? scoreToFive(v) : null);
         const cells = values.map((value, i) => {
@@ -239,6 +244,9 @@ function showAreaPopup(layer) {
 function selectArea(id, focusMap = false) {
     const layer = areaLayers.get(id);
     if (!layer) return;
+    const mobileComparing = globalThis.BrnoMobile?.comparing;
+    if (globalThis.BrnoMobile?.active && locationMode) document.getElementById('clear-pin').click();
+    if (globalThis.BrnoMobile?.active && !mobileComparing) selectedAreas = [id];
     if (!selectedAreas.includes(id)) {
         if (selectedAreas.length === 2) selectedAreas[1] = id;
         else selectedAreas.push(id);
@@ -246,7 +254,8 @@ function selectArea(id, focusMap = false) {
     refreshSelectionStyles();
     renderComparison();
     if (focusMap) map.fitBounds(layer.getBounds(), { padding: [35, 35], maxZoom: 14 });
-    showAreaPopup(layer);
+    if (globalThis.BrnoMobile?.active) { map.closePopup(); globalThis.BrnoMobile.selected(); }
+    else showAreaPopup(layer);
 }
 
 function removeArea(id) {
@@ -476,6 +485,7 @@ const walkingExplorer = createWalkingExplorer(map, {
     onLocationChange(active) {
         locationMode = active;
         renderComparison();
+        globalThis.BrnoMobile?.location(active);
     }
 });
 

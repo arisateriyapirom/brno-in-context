@@ -1,0 +1,106 @@
+/* These controls are absent from the desktop layout. */
+.mobile-menu, .mobile-map-toolbar, .mobile-sheet-controls, .mobile-compare, .mobile-map-hint { display: none; }
+@media (max-width: 760px) {
+    body { padding: 18px 16px; }
+    .site-header { position: relative; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .site-header h1 { font-size: 24px; }
+    .title-tagline { font-size: 12px; line-height: 1.5; }
+    .mobile-menu { display: block; margin-left: auto; min-height: 44px; border: 1px solid #c7ccbf; border-radius: 7px; padding: 8px 12px; background: #f5f3ef; color: #222; font-size: 13px; }
+    .site-header .top-nav { display: none; width: 100%; padding: 6px 0; }
+    .site-header.mobile-nav-open .top-nav { display: flex; flex-direction: column; align-items: stretch; }
+    .top-nav > span { display: none; }
+    .top-nav a { min-height: 44px; padding: 10px; box-sizing: border-box; }
+    input, select, textarea { font-size: 16px !important; }
+    button, a { -webkit-tap-highlight-color: #dbeafe; }
+    button:focus-visible, a:focus-visible { outline: 2px solid #2457c5; outline-offset: 2px; }
+    [hidden] { display: none !important; }
+    /* Map stays visible while the independently scrolling results sheet expands. */
+    body.livability-page { padding: 12px 10px 0; }
+    .livability-page .site-header { margin-bottom: 8px; }
+    .livability-page .title-tagline { display: none; }
+    .livability-page .livability-layout { display: block; position: relative; min-height: 0; }
+    .livability-page .map-column { height: calc(100% - 62px - env(safe-area-inset-bottom)); width: 100%; }
+    .livability-page #map { min-height: 0; }
+    .mobile-map-toolbar { display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; margin-bottom: 6px; }
+    .mobile-map-toolbar button { border: 1px solid #c7ccbf; border-radius: 7px; padding: 8px; background: #f5f3ef; color: #253326; min-height: 44px; font-size: 12px; }
+    #mobile-factor { flex: 1; }
+    .map-topbar { gap: 6px; margin-bottom: 5px; }
+    .map-topbar .map-status { font-size: 10px; }
+    #about-data-toggle { min-height: 44px; }
+    .about-data-panel { position: fixed; top: 12vh; right: 10px; width: calc(100% - 20px); max-height: 80dvh; font-size: 14px; z-index: 1600; }
+    .about-data-panel p:not(.about-data-links) { text-align: left; }
+    .about-data-panel h3 { font-size: 15px; }
+    .livability-page .sidebar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 1200; background: #f5f3ef; border: 1px solid #ccc; border-radius: 15px 15px 0 0; padding: 0 12px calc(12px + env(safe-area-inset-bottom)); box-sizing: border-box; overflow-y: auto; scrollbar-gutter: auto; box-shadow: 0 -4px 14px #0001; }
+    .sidebar[data-sheet="peek"] { height: calc(62px + env(safe-area-inset-bottom)); overflow: hidden; }
+    .sidebar[data-sheet="peek"] #overall-card { display: none; }
+    .sidebar[data-sheet="half"] { height: 45%; }
+    .sidebar[data-sheet="full"] { height: 84%; }
+    .mobile-sheet-controls { display: flex; position: sticky; top: 0; z-index: 2; align-items: center; gap: 5px; padding: 8px 0; background: #f5f3ef; border-bottom: 1px solid #ddd; }
+    .mobile-sheet-controls button { min-height: 44px; border: 0; background: transparent; padding: 7px; font-size: 12px; }
+    #mobile-sheet-toggle { flex: 1; text-align: left; font-weight: bold; }
+    .sidebar #overall-card { margin-top: 12px; padding: 0; border: 0; }
+    .mobile-compare { display: block; min-height: 44px; background: #fff; border: 1px solid #bbc5b4; border-radius: 7px; padding: 8px 12px; margin: 10px 0; }
+    .mobile-map-hint { display: block; font-size: 12px; padding: 6px; margin: 0; background: #e9effb; }
+    .comparison-heading { flex-wrap: wrap; }
+    .comparison-heading button, .selected-area button { min-height: 44px; }
+    .comparison-table { font-size: 13px; }
+    .comparison-table thead { position: sticky; top: 61px; z-index: 1; background: #f5f3ef; }
+    .rent-card { flex-basis: 100px; font-size: 14px; }
+    .rent-card details, .rent-method, .rent-snapshot { font-size: 13px; }
+    .rent-tradeoff { font-size: 14px; }
+    .rent-summary summary { padding: 10px 0; }
+    .walk-group button { min-height: 55px; font-size: 14px; }
+    #walk-status { font-size: 13px; }
+    .mobile-tools { width: calc(100% - 20px); max-width: 540px; max-height: 85vh; max-height: 85dvh; border: 1px solid #c7ccbf; border-radius: 14px; padding: 16px; box-sizing: border-box; background: #f5f3ef; color: #292d29; overflow-y: auto; }
+    .mobile-tools::backdrop { background: #0005; }
+    .mobile-tools > header { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+    .mobile-tools h2 { font-size: 20px; margin: 0; }
+    #mobile-tool-close { width: 44px; height: 44px; border: 0; background: transparent; font-size: 28px; }
+    .mobile-search-tabs { display: flex; gap: 8px; margin: 12px 0; }
+    .mobile-search-tabs button { flex: 1; min-height: 44px; border: 1px solid #bcc5b5; border-radius: 6px; background: transparent; }
+    .mobile-search-tabs button[aria-pressed="true"] { background: #e2e8dc; }
+    .mobile-tools[data-search="area"] .walking-explorer, .mobile-tools[data-search="address"] #area-search-form { display: none; }
+    .mobile-tools .walking-explorer > summary, .mobile-tools .priorities > summary { display: none; }
+    .mobile-tools .filters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; padding-top: 14px; }
+    .mobile-tools .filters::after { display: none; }
+    .mobile-tools .filters button { min-height: 48px; padding: 10px; font-size: 14px; }
+    .mobile-tools .search-controls button, .mobile-tools .pin-actions button, #reset-priorities { min-height: 44px; }
+    .mobile-tools .priority-row { grid-template-columns: 1fr auto; gap: 8px; margin: 20px 0; font-size: 14px; }
+    .mobile-tools .priority-row input { grid-column: 1 / -1; grid-row: 2; height: 36px; }
+    .mobile-tools .priority-row output { grid-column: 2; font-size: 12px; }
+    .mobile-tools .priorities p { font-size: 13px; }
+    .mobile-tools .map-footer { display: block; max-height: none; overflow: visible; }
+    .mobile-tools .map-footer-controls { align-items: stretch; margin-top: 20px; }
+    .mobile-tools #show-locations { min-width: 22px; min-height: 22px; }
+    .home-hero { grid-template-columns: minmax(0,1fr); justify-items: center; padding: 45px 0; }
+    .home-intro { width: 100%; text-align: center; font-size: clamp(32px,8vw,48px); }
+    .home-description { font-size: 15px; white-space: normal; text-align: center; line-height: 1.6; max-width: 400px; margin: 14px auto 0; }
+    .home-links { justify-content: center; gap: 16px; }
+    .home-links a { min-height: 44px; padding: 10px 0; box-sizing: border-box; font-size: 14px; }
+    .home-journey { margin-bottom: 24px; }
+    .journey-controls button { min-height: 44px; padding: 8px; font-size: 12px; }
+    .contact-link, .contact-work-note { padding: 12px 0; }
+    .contact-message { gap: 25px; }
+    .journal-filters button { min-height: 44px; padding: 9px 14px; }
+    .journal-dialog { position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: 100dvh; margin: 0; border-radius: 0; background: #f5f3ef; padding-bottom: env(safe-area-inset-bottom); }
+    .journal-folder-tabs { position: sticky; top: 0; z-index: 4; background: #f5f3ef; padding: 10px 60px 0 12px; }
+    .journal-folder-tabs button { min-height: 48px; }
+    .journal-close { position: fixed; z-index: 5; right: 10px; top: 12px; width: 44px; height: 44px; }
+    .journal-story { display: block; }
+    .journal-story-photo { width: 100%; height: min(55dvh,540px); aspect-ratio: auto; }
+    .journal-story-photo video { height: 100%; max-height: 100%; }
+    .journal-carousel { height: 100%; aspect-ratio: auto; touch-action: pan-y; }
+    .carousel-arrow { width: 44px; height: 44px; }
+    .journal-story-copy { padding: 25px 22px; }
+    #entry-caption { font-size: 16px; line-height: 1.75; }
+    #entry-map { height: 55dvh; }
+}
+@media (max-width: 760px) {
+    #walk-status[aria-busy="true"]::before { content: ''; display: inline-block; width: 13px; height: 13px; margin-right: 8px; border: 2px solid #ccd3c6; border-top-color: #345b38; border-radius: 50%; vertical-align: -2px; animation: mobile-routing-spin 1s linear infinite; }
+    .mobile-tools .search-controls input { min-width: 0; width: 100%; }
+    .mobile-tools .search-controls { display: flex; }
+}
+@keyframes mobile-routing-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+    #walk-status[aria-busy="true"]::before { animation: none; }
+}

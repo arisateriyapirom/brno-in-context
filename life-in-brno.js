@@ -37,6 +37,10 @@ const categoryButtons = [...document.querySelectorAll('[data-category]')];
 function matchingEntries(category, area) {
     return journalEntries.filter(entry => (category === 'Overall' || entry.categories.includes(category)) && (!area || entry.area === area));
 }
+function journalImageSource(src) {
+    return matchMedia('(max-width: 760px)').matches && /data\/images_life\/02-0[1-5]\.jpe?g$/.test(src)
+        ? src.replace('images_life/', 'images_life/mobile/').replace(/\.jpeg$/, '.jpg') : src;
+}
 function createPhotoCarousel(entry) {
     let index = 0;
     const carousel = document.createElement('div'); carousel.className = 'journal-carousel';
@@ -54,7 +58,7 @@ function createPhotoCarousel(entry) {
     counter.setAttribute('role', 'status'); counter.setAttribute('aria-live', 'polite');
     function show(offset) {
         index = (index + offset + entry.images.length) % entry.images.length;
-        image.src = entry.images[index];
+        image.src = journalImageSource(entry.images[index]);
         image.alt = `${entry.alt || entry.title} — photo ${index + 1} of ${entry.images.length}`;
         counter.textContent = `${index + 1} / ${entry.images.length}`;
     }
@@ -65,6 +69,18 @@ function createPhotoCarousel(entry) {
             event.preventDefault(); event.stopPropagation(); show(event.key === 'ArrowLeft' ? -1 : 1);
         }
     });
+    let touchStart = null;
+    carousel.addEventListener('touchstart', event => {
+        touchStart = event.touches.length === 1 ? {x:event.touches[0].clientX,y:event.touches[0].clientY} : null;
+    }, {passive:true});
+    carousel.addEventListener('touchend', event => {
+        if (!touchStart || !event.changedTouches.length) return;
+        const dx = event.changedTouches[0].clientX - touchStart.x;
+        const dy = event.changedTouches[0].clientY - touchStart.y;
+        touchStart = null;
+        if (matchMedia('(max-width: 760px)').matches && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) show(dx < 0 ? 1 : -1);
+    }, {passive:true});
+    carousel.addEventListener('touchcancel', () => { touchStart = null; });
     carousel.append(image, previous, next, counter); show(0);
     return carousel;
 }
@@ -81,7 +97,7 @@ function photoContent(entry, playback = false) {
     }
     if (entry.image) {
         const img = document.createElement('img');
-        img.src = entry.image; img.alt = entry.alt || entry.title;
+        img.src = journalImageSource(entry.image); img.alt = entry.alt || entry.title;
         img.loading = 'lazy'; img.decoding = 'async';
         return img;
     }
