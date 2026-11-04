@@ -77,7 +77,8 @@
     .home-description { font-size: 15px; white-space: normal; text-align: center; line-height: 1.6; max-width: 400px; margin: 14px auto 0; }
     .home-links { justify-content: center; gap: 16px; }
     .home-links a { min-height: 44px; padding: 10px 0; box-sizing: border-box; font-size: 14px; }
-    .home-journey { margin-bottom: 24px; }
+    .home-journey { width: 100%; display: grid; justify-items: center; margin-bottom: 24px; }
+    .home-journey .globe-stage { justify-self: center; }
     .journey-controls button { min-height: 44px; padding: 8px; font-size: 12px; }
     .contact-link, .contact-work-note { padding: 12px 0; }
     .contact-message { gap: 25px; }
