@@ -1,0 +1,20 @@
+.analysis-basis { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; margin: 0 0 8px; font-size: 12px; }
+.analysis-basis select { padding: 7px 9px; border: 1px solid #c7ccbf; border-radius: 6px; background: #f5f3ef; color: #263b2b; }
+#residential-load-status { font-size: 11px; color: #60685e; }
+#residential-results { margin: 12px 0; padding: 12px; border: 1px solid #c7ccbf; border-radius: 8px; }
+#residential-results h3 { font-size: 15px; margin: 12px 0 8px; }
+#residential-results p { font-size: 12px; line-height: 1.5; }
+.residential-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.residential-table caption { text-align: left; font-weight: bold; margin: 10px 0; }
+.residential-table th { text-align: left; font-weight: normal; }
+.residential-table td { text-align: right; }
+.residential-table td, .residential-table th { padding: 7px 3px; border-bottom: 1px solid #ddd; }
+.residential-table small { display: block; color: #666; }
+#clear-residential-cell { padding: 8px; background: transparent; border: 1px solid #bcc5b5; border-radius: 5px; cursor: pointer; }
+@media(max-width:760px) {
+    .analysis-basis { gap: 4px 8px; margin-bottom: 5px; }
+    .analysis-basis select { min-height: 44px; max-width: 100%; }
+    #residential-load-status { width: 100%; }
+    #residential-results p, .residential-table { font-size: 13px; }
+    #clear-residential-cell { min-height: 44px; }
+}

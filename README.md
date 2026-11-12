@@ -49,3 +49,23 @@ and [OpenStreetMap](https://www.openstreetmap.org/copyright).
 Rental snapshot: [Czech Ministry of Finance](https://mf.gov.cz/cs/rozpoctova-politika/podpora-projektoveho-rizeni/cenova-mapa/cenova-mapa-infografika).
 Globe geometry: [Natural Earth](https://www.naturalearthdata.com/).
 The map's “About the data” panel describes the methods and limitations.
+
+## Residential accessibility
+
+The livability page defaults to **Residential access**, with the original
+**Land area** view available above the map. Score overlays still start off.
+Residential mode uses KAM Brno's 2018–2020 housing-floor-area data and estimated
+internal building origins on the existing walking network. It is not population
+coverage or verified entrance routing. The derived 250 m grid and cadastral
+summaries are in `data/residential/` and must be uploaded with the site, together
+with `residential-access.js` and `residential-access.css`.
+
+Residential overall includes eight walking-access factors. Trees, park area and
+cycling density remain cadastral context outside that overall; rental cost also
+remains at cadastral scale. Switching views changes the score definition, not
+just its map resolution. Social-service coverage in residential mode is an
+absolute share rather than a score rescaled against the best area.
+
+The original GeoPackage, building-level audit, reproducible analysis and QGIS
+point output remain in `_local-only/`. See
+`_local-only/analysis/RESIDENTIAL.md` for assumptions and reproduction.

@@ -33,6 +33,7 @@ function getColor(score) {
 
 //calculating overall score
 function getOverallScore(properties) {
+    if (globalThis.ResidentialAccess?.active) return ResidentialAccess.overall(properties, factorWeights);
     // Preserve the published baseline exactly when priorities are reset.
     if (Object.values(factorWeights).every(weight => weight === 1) && Number.isFinite(properties.overall_score)) {
         return properties.overall_score;
@@ -107,15 +108,15 @@ function styleFeature(feature) {
     if (currentFactor === 'overall_score') {
         score = getOverallScore(feature.properties);
     } else {
-        score = feature.properties[currentFactor];
+        score = factorScore(feature.properties, currentFactor);
     }
 
     const selectedIndex = selectedAreas.indexOf(areaId(feature.properties));
     return {
         fillColor: currentFactor === 'affordability' ? (rentBand(rentRecord(feature.properties))?.color || '#b8b8b8') : getColor(score),
         weight: selectedIndex >= 0 ? 3.5 : 1.5,
-        color: selectedIndex >= 0 ? selectionColors[selectedIndex] : (showScoreOverlay ? '#ffffff' : '#666666'),
-        fillOpacity: showScoreOverlay ? (selectedIndex >= 0 ? 0.85 : 0.7) : 0
+        color: selectedIndex >= 0 ? selectionColors[selectedIndex] : (showScoreOverlay && !globalThis.ResidentialAccess?.gridVisible ? '#ffffff' : '#666666'),
+        fillOpacity: globalThis.ResidentialAccess?.gridVisible ? 0 : showScoreOverlay ? (selectedIndex >= 0 ? 0.85 : 0.7) : 0
     };
 }
 
@@ -156,15 +157,18 @@ function areaId(properties) {
 }
 
 function factorScore(properties, factor) {
+    if (factor !== 'overall_score' && globalThis.ResidentialAccess?.applies(factor)) return ResidentialAccess.score(properties, factor);
     return factor === 'overall_score' ? getOverallScore(properties) : properties[factor];
 }
 
 function refreshSelectionStyles() {
     livabilityLayer.setStyle(styleFeature);
     selectedAreas.forEach(id => areaLayers.get(id).bringToFront());
+    globalThis.ResidentialAccess?.refresh();
 }
 
 function renderComparison() {
+    globalThis.ResidentialAccess?.render();
     globalThis.BrnoMobile?.sync();
     const exploreLocation = locationMode && currentFactor !== 'affordability';
     document.getElementById('area-results').hidden = exploreLocation;
@@ -212,11 +216,12 @@ function renderComparison() {
                 ${field === 'overall_score' ? `<span class="score-rank">${overallRank(areas[i])}</span>` : ''}
             </td>`;
         }).join('');
-        return `<tr${field === currentFactor ? ' class="current-factor"' : ''}><th scope="row">${label}</th>${cells}</tr>`;
+        const rowLabel = globalThis.ResidentialAccess?.active && ['tree_score','park_score','cycling_dens_score'].includes(field) ? `${label} · area context` : label;
+        return `<tr${field === currentFactor ? ' class="current-factor"' : ''}><th scope="row">${rowLabel}</th>${cells}</tr>`;
     }).join('');
     document.getElementById('score-comparison').innerHTML = `
         ${rentPanel(areas)}
-        <table class="comparison-table"><caption>Livability scores out of 5</caption>
+        <table class="comparison-table"><caption>${globalThis.ResidentialAccess?.caption() || 'Livability scores out of 5'}</caption>
             <thead><tr><th scope="col">Factor</th>${headers}</tr></thead><tbody>${rows}</tbody>
         </table>`;
 }
@@ -232,7 +237,7 @@ function showAreaPopup(layer) {
     const scoreText = Number.isFinite(score) ? `${scoreToFive(score)} / 5` : 'Not available';
     layer.setPopupContent(`<div class="score-popup">
         <strong>${escapeHtml(p.Name)}</strong>
-        <div class="popup-factor">${factorLabels[currentFactor]}</div>
+        <div class="popup-factor">${globalThis.ResidentialAccess?.active && currentFactor === 'overall_score' ? 'Residential access' : factorLabels[currentFactor]}</div>
         <div class="popup-rating">${getRatingBlocks(score)}</div>
         <div class="popup-score">${scoreText}</div>
         ${currentFactor === 'overall_score' ? `<div class="score-rank">${overallRank(p)}</div>` : ''}
@@ -244,6 +249,7 @@ function showAreaPopup(layer) {
 function selectArea(id, focusMap = false) {
     const layer = areaLayers.get(id);
     if (!layer) return;
+    globalThis.ResidentialAccess?.clearCell();
     const mobileComparing = globalThis.BrnoMobile?.comparing;
     if (globalThis.BrnoMobile?.active && locationMode) document.getElementById('clear-pin').click();
     if (globalThis.BrnoMobile?.active && !mobileComparing) selectedAreas = [id];
@@ -356,6 +362,7 @@ function setupAreaControls() {
         } else if (focus) selectArea(focus.dataset.focusArea, true);
     });
     document.getElementById('clear-selection').addEventListener('click', () => {
+        globalThis.ResidentialAccess?.clearCell();
         selectedAreas = [];
         map.closePopup();
         refreshSelectionStyles();
@@ -411,6 +418,7 @@ const factorDescriptions = {
 };
 
 function coverageDetails(properties) {
+    if (globalThis.ResidentialAccess?.applies(currentFactor)) return ResidentialAccess.coverage(properties);
     const fields = {
         transit_cov_score: [['transit_cov_pct', 'Within a 400 m walk']],
         socialservice_cov_score: [['socialservice_cov_pct', 'Within a 400 m walk']],
@@ -534,6 +542,7 @@ Promise.all([fetch(networkDataUrl), fetch('data/rent/relative_rent.json').then(r
 
         setupAreaControls();
         setupPriorities();
+        globalThis.ResidentialAccess?.init();
         document.getElementById('show-score-overlay').disabled = false;
         map.fitBounds(livabilityLayer.getBounds());
         document.getElementById('map-status').textContent =
@@ -584,6 +593,7 @@ Promise.all([fetch(networkDataUrl), fetch('data/rent/relative_rent.json').then(r
                 // Highlight clicked button
                     this.classList.add('active');
                     this.setAttribute('aria-pressed', 'true');
+                    globalThis.ResidentialAccess?.refreshText();
 
             });
 
@@ -606,7 +616,7 @@ function highlightFeature(e) {
     layer.setStyle({
         weight: selectedIndex >= 0 ? 4.5 : 2,
         color: selectedIndex >= 0 ? selectionColors[selectedIndex] : '#222222',
-        fillOpacity: showScoreOverlay ? 0.85 : 0
+        fillOpacity: globalThis.ResidentialAccess?.gridVisible ? 0 : showScoreOverlay ? 0.85 : 0
     });
 
     layer.bringToFront();
