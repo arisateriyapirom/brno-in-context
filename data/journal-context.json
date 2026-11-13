@@ -1,0 +1,67 @@
+{
+  "rent_snapshot": "August 2026",
+  "rent_benchmark": 301.5,
+  "graph_sha256": "940c6b8fff59ab3fc1cec34039be10dc90109e30a1850b9e1c74dfaf1d491199",
+  "stories": {
+    "danuse-muzikarova-park": {
+      "area_id": "610003",
+      "area_name": "Město Brno",
+      "location": {
+        "lat": 49.19799,
+        "lng": 16.609452
+      },
+      "rent": {
+        "name": "Město Brno",
+        "reference_rent": 324,
+        "coverage_class": 5,
+        "interval_low": 310,
+        "interval_high": 338,
+        "difference_pct": 7.462686567164178
+      },
+      "nearby": {
+        "transit": {
+          "name": "Janáčkovo divadlo",
+          "distance_m": 116
+        },
+        "parks": {
+          "name": "Park Danuše Muzikářové",
+          "distance_m": 14
+        },
+        "grocery": {
+          "name": "Žabka",
+          "distance_m": 141
+        }
+      }
+    },
+    "noji-ceramic": {
+      "area_id": "611379",
+      "area_name": "Ponava",
+      "location": {
+        "lat": 49.2127594,
+        "lng": 16.600893
+      },
+      "rent": {
+        "name": "Ponava",
+        "reference_rent": 312,
+        "coverage_class": 5,
+        "interval_low": 301,
+        "interval_high": 323,
+        "difference_pct": 3.482587064676612
+      },
+      "nearby": {
+        "transit": {
+          "name": "Šumavská",
+          "distance_m": 168
+        },
+        "parks": {
+          "name": "Chaloupeckého náměstí",
+          "distance_m": 120
+        },
+        "grocery": {
+          "name": "HM potraviny",
+          "distance_m": 277
+        }
+      }
+    }
+  }
+}

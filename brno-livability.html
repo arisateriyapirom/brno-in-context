@@ -21,6 +21,7 @@
 
     <link rel="stylesheet" href="mobile.css?v=20261104">
     <link rel="stylesheet" href="residential-access.css?v=20261110">
+    <link rel="stylesheet" href="story-links.css?v=20261113">
 </head>
 
 <body class="livability-page">
@@ -164,6 +165,7 @@
                 <p id="selection-status" class="selection-status" role="status">Click an area or search by name. Select a second area to compare.</p>
                 <div id="selected-areas" class="selected-areas"></div>
                 <div id="score-comparison"></div>
+                <section id="area-stories" aria-label="Journal visits in selected areas" hidden></section>
                 </div>
                 <div id="location-results" hidden>
                 <p id="walk-origin"></p>
@@ -193,12 +195,14 @@
                 <h3>Where the data comes from</h3>
                 <p>Cadastral boundaries, trees, parks, cycling routes and the original amenity layers come from <a href="https://gis.brno.cz/ost/edas/public/" target="_blank" rel="noopener">Brno’s official publicly accessible data portal</a>. Additional learning, grocery, culture and fitness locations, plus the walking network, come from OpenStreetMap. These are saved datasets, not live listings; their dates and completeness vary.</p>
                 <h3>Walking access</h3>
-                <p><strong>Residential access</strong> uses housing floor area from <a href="https://webmaps.kambrno.cz/buildings/" target="_blank" rel="noopener">KAM Brno’s 2018–2020 building survey</a>. Internal points in 78,704 building features are estimated walking origins, not verified entrances. Results are weighted by recorded housing floor area, not resident counts. The 250 m grid represents surveyed buildings, not all land inside each square. Mixed-use buildings with housing are included. Newer development may be missing.</p>
-                <p>Residential overall combines eight walking-access factors using your priorities. Education retains its 50/35/15 weights; social services use absolute coverage, without rescaling to the best area. Trees, park area and cycling density remain separate cadastral context and do not enter residential overall. Rental estimates also remain cadastral. Residential and original overall scores have different definitions and are not a before/after change.</p>
+                <p><strong>Residential access</strong> uses housing floor area from <a href="https://webmaps.kambrno.cz/buildings/" target="_blank" rel="noopener">KAM Brno’s 2018–2020 building survey</a>. Internal points in 78,704 building features are estimated walking origins, not verified entrances. Results are weighted by recorded housing floor area, not resident counts. The north-aligned grid (approximately 250 m on the ground) represents surveyed buildings, not all land inside each square. Mixed-use buildings with housing are included. Newer development may be missing.</p>
+                <p>Residential overall combines ten walking-access factors using your priorities. Education retains its 50/35/15 weights; social services use absolute coverage, without rescaling to the best area. Parks and cycling measure walking access within 500 m and enter residential overall. Trees remain a separate cadastral greenness measure outside residential overall. Rental estimates also remain cadastral. Residential and original overall scores have different definitions and are not a before/after change.</p>
                 <p>Thirteen origins could not connect within 100 m; their housing floor area remains in the denominator as no confirmed access. One invalid geometry was repaired; one feature outside the cadastral boundary was excluded. Median distances include only destinations found within 5 km, with the included floor-area share shown alongside.</p>
                 <p>In the original Land area view, coverage estimates the share of <strong>land area</strong> within walking distance of at least one destination—not the share of residents. It uses 25 m samples and paths in the supplied network.</p>
                 <ul><li>Transit and social services: 400 m</li><li>Cafés/restaurants and groceries: 500 m</li><li>Learning and fitness/wellness: 800 m</li><li>Culture: 1,000 m</li><li>Education: kindergarten 800 m, school/college 1,500 m, university 2,000 m</li></ul>
                 <p>Connections to paths can be up to 100 m and count toward distance. They may cross unmapped obstacles. Steps are included; this is not wheelchair routing. Opening hours, capacity and entrances are not verified. Address/pin results show the nearest two reachable destinations per category, within a 5 km search limit.</p>
+                <h3>Residential park and cycling access</h3>
+                <p>Both use a 500 m walking threshold and the supplied Brno park polygons and cycling-route lines. Access candidates come from network overlaps and connections up to 100 m to these geometries, not verified entrances. Nine parks marked as restricted are excluded. Cycling measures access to mapped routes, not safety, cycling travel times or network connectivity. Three cycling features have no eligible network access candidates.</p>
                 <h3>How scores work</h3>
                 <p>In the original Land area view, eleven factors start equally weighted. “Your Priority” changes their contribution to the overall score; missing scores are omitted. Trees, parks and cycling retain their original density or area measures.</p>
                 <p>The original Land area view combines kindergarten (50%), school/college (35%) and university (15%) coverage. Social-service coverage is scaled against the highest-coverage area. These formulas were inferred from the original project and retained for this prototype.</p>
@@ -232,13 +236,13 @@
 
                 <details class="method-note">
                     <summary>How walking coverage is estimated</summary>
-                    <p>Residential access uses internal points in surveyed residential buildings, weighted by housing floor area. Coloured 250 m cells summarise the buildings whose origins lie inside them; they are not exact service areas or resident counts. Switch to Land area above the map for the original measure.</p>
+                    <p>Residential access uses internal points in surveyed residential buildings, weighted by housing floor area. Coloured north-aligned cells, approximately 250 m across, summarise the buildings whose origins lie inside them; they are not exact service areas or resident counts. Switch to Land area above the map for the original measure.</p>
                     <p>In the original view, coverage is estimated across land area using 25 m samples and routes
                         along streets and paths. Connections to the nearest path, up to 100 m,
                         count toward the walking distance. Locations farther from a path count
                         as unserved. Connections may cross unmapped obstacles, and entrances
                         have not been verified. Steps are included.</p>
-                    <p>Tree density, park coverage and cycling density retain their original
+                    <p>In Land area mode, tree density, park coverage and cycling density retain their original
                         measurements. Education categories with no coverage receive zero.</p>
                 </details>
 
@@ -320,10 +324,12 @@
     <!-- Our JavaScript -->
     <script src="about-data.js"></script>
     <script src="factor-locations.js"></script>
-    <script src="walking-explorer.js?v=20261104-mobile"></script>
+    <script src="walking-explorer.js?v=20261113-stories"></script>
     <script src="rent-comparison.js?v=20261103-rent-detail"></script>
-    <script src="residential-access.js?v=20261110"></script>
-    <script src="script.js?v=20261110-residential"></script>
+    <script src="residential-access.js?v=20261113-north-grid"></script>
+    <script src="journal-data.js?v=20261113-notes"></script>
+    <script src="story-links.js?v=20261113"></script>
+    <script src="script.js?v=20261113-stories"></script>
 
     <script src="mobile.js?v=20261104"></script>
 </body>

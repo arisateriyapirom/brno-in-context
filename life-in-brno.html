@@ -6,8 +6,9 @@
     <title>Life in Brno · Brno in Pictures</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="life-in-brno.css?v=20261103-carousel">
+    <link rel="stylesheet" href="life-in-brno.css?v=20261113-notes-tab">
     <link rel="stylesheet" href="mobile.css?v=20261104">
+    <link rel="stylesheet" href="story-links.css?v=20261113">
 </head>
 <body class="journal-page">
     <header class="site-header">
@@ -31,6 +32,7 @@
 
     
 
+        <p class="journal-progress-note">An ongoing collection of visits, food, social activities and small discoveries. These are personal moments, not accounts of living in every neighbourhood. There is always more of Brno to explore.</p>
         <section class="journal-browse" aria-label="Browse the journal">
             <div class="journal-filters" role="group" aria-label="Photo categories">
                 <button type="button" data-category="Overall" class="is-active" aria-pressed="true">Overall</button>
@@ -62,6 +64,7 @@
         <div class="journal-folder-tabs" role="tablist" aria-label="Photo details">
             <button id="entry-story-tab" type="button" role="tab" aria-controls="entry-story-panel" aria-selected="true">Story</button>
             <button id="entry-location-tab" type="button" role="tab" aria-controls="entry-location-panel" aria-selected="false" tabindex="-1">Location</button>
+            <button id="entry-notes-tab" type="button" role="tab" aria-controls="entry-notes-panel" aria-selected="false" tabindex="-1">Visit Notes</button>
         </div>
         <div id="entry-story-panel" class="journal-story" role="tabpanel" aria-labelledby="entry-story-tab">
             <div id="entry-photo" class="journal-story-photo"></div>
@@ -80,10 +83,20 @@
             <p id="entry-location-note" role="status" aria-live="polite"></p>
             <div id="entry-map" aria-label="Map showing the photo location in Brno"></div>
             <button id="entry-map-retry" type="button" hidden>Retry map</button>
+            <section id="entry-neighbourhood" aria-label="Nearby access and neighbourhood context"></section>
+        </div>
+        <div id="entry-notes-panel" class="journal-observations" role="tabpanel" aria-labelledby="entry-notes-tab" hidden>
+            <h2>Visit Notes</h2>
+            <p>Personal observations from this visit. Conditions may change; these notes do not affect map scores.</p>
+            <div id="entry-observations" hidden><dl id="entry-observation-list"></dl></div>
+            <p id="entry-observations-empty">No visit notes added yet.</p>
         </div>
     </dialog>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="life-in-brno.js?v=20261104-mobile"></script>
+    <script src="journal-data.js?v=20261113-notes"></script>
+    <script src="rent-comparison.js?v=20261103-rent-detail"></script>
+    <script src="story-links.js?v=20261113"></script>
+    <script src="life-in-brno.js?v=20261113-notes-tab"></script>
     <script src="mobile.js?v=20261104"></script>
 </body>
 </html>

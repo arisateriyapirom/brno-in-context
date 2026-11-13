@@ -1,30 +1,3 @@
-// Draft content: replace prompts with personal observations, set image to a local
-// photo path (e.g. "images/journal/morning.jpg"), add alt text and a date.
-// Set draft:false when an entry is ready. Categories may contain multiple tags.
-// Set location: {lat: ..., lng: ...} for the actual photo position. A null location
-// shows a clearly labeled cadastral-area reference pin instead, not a photo pin.
-const journalEntries = [
-    { id: 'danuse-muzikarova-park', title: 'Dynamic Spektrum', subtitle: 'Prototyp Crew · Prototyp Festival 2026', area: 'Město Brno', categories: ['Life Here', 'Arts'], tone: 'sage',
-      video: 'data/images_life/01-1.mp4', image: 'data/images_life/01-1-poster.jpg', alt: 'Video from Danuše Muzikářová Park', date: '',
-      location: {lat: 49.197990, lng: 16.609452}, locationKind: 'place', draft: false,
-      caption: `A temporary textile installation in Danuše Muzikářová Park, *Dynamic Spektrum* explores colour through layers of suspended fabric that shift with light, movement and perspective.
-
-What caught my attention most was simply how colourful it was. At a time when minimalism continues to shape so much of contemporary design (muted tones, beige, black and white often associated with being more elegant or timeless) it felt refreshing to encounter something so vibrant in the middle of the city.
-
-As the fabric moved, each colour caught the light differently, constantly changing the appearance of the installation. Against the trees and autumn light, the installation felt especially fitting: bright and playful, but completely at blending in with the colours of the season.` },
-    { id: 'noji-ceramic', title: 'Noji Ceramic', area: 'Ponava', categories: ['Life Here'], tone: 'sand',
-      image: 'data/images_life/02-01.jpg',
-      images: ['data/images_life/02-01.jpg', 'data/images_life/02-02.jpeg', 'data/images_life/02-03.jpeg', 'data/images_life/02-04.jpeg', 'data/images_life/02-05.jpeg'],
-      alt: 'My ceramics experience at Noji Ceramic', date: '', draft: false,
-      location: {lat: 49.2127594, lng: 16.600893}, locationKind: 'venue',
-      locationUrl: 'https://maps.app.goo.gl/zL6Rb6H4tWMpSPPQ9',
-      caption: `Trying ceramics for the first time became one of those small experiences that made my life in Brno feel more fun. There’s something very calming about working with clay, creating without worrying about whether something is right or wrong, and simply making what feels good to you.
-
-Noji Ceramic also has a warm, cozy atmosphere. Jitka is incredibly friendly and helpful, and makes the studio feel comfortable and easygoing from the moment I arrived.
-
-Fingers crossed that my ceramics turn out great 🤞` },
-
-];
 let journalCategory = 'Overall';
 let currentEntry = null;
 let entryMap, entryMarker, entryBoundaries, journalAreasPromise;
@@ -113,6 +86,21 @@ function tags(entry) {
         const tag = document.createElement('span'); tag.className = 'journal-tag'; tag.textContent = category; return tag;
     });
 }
+function renderObservations(entry) {
+    const fields = [['visitDate','Visited'],['visitTime','Time of visit'],['cost','Cost / entry'],
+        ['comfort','Seating, shade & shelter'],['walking','Getting there on foot'],['suitedTo','Who might enjoy it · my impression']];
+    const list = document.getElementById('entry-observation-list');
+    list.replaceChildren();
+    for (const [key,label] of fields) {
+        const value = entry.observations?.[key];
+        if (typeof value !== 'string' || !value.trim()) continue;
+        const term = document.createElement('dt'), detail = document.createElement('dd');
+        term.textContent = label; detail.textContent = value.trim();
+        list.append(term, detail);
+    }
+    document.getElementById('entry-observations').hidden = !list.children.length;
+    document.getElementById('entry-observations-empty').hidden = Boolean(list.children.length);
+}
 function openEntry(entry) {
     currentEntry = entry;
     document.getElementById('entry-photo').replaceChildren(photoContent(entry, true));
@@ -132,7 +120,8 @@ function openEntry(entry) {
         return document.createTextNode(part);
     }));
     document.getElementById('entry-date').textContent = entry.date || (entry.draft ? 'Add the date of your observation' : '');
-    document.getElementById('entry-date').hidden = !entry.date && !entry.draft;
+    document.getElementById('entry-date').hidden = Boolean(entry.observations?.visitDate?.trim()) || (!entry.date && !entry.draft);
+    renderObservations(entry);
     journalDialog.showModal();
     selectEntryTab('story');
     // Start within the card click gesture; native controls remain a fallback.
@@ -174,19 +163,22 @@ journalDialog.addEventListener('click', event => {
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) journalDialog.close();
 });
 
-const entryTabs = [document.getElementById('entry-story-tab'), document.getElementById('entry-location-tab')];
+const entryTabNames = ['story', 'location', 'notes'];
+const entryTabs = entryTabNames.map(name => document.getElementById(`entry-${name}-tab`));
 function selectEntryTab(tab) {
     ++locationVersion;
     entryTabs.forEach((button, i) => {
-        const active = (i === 0 ? 'story' : 'location') === tab;
+        const active = entryTabNames[i] === tab;
         button.setAttribute('aria-selected', String(active));
         button.tabIndex = active ? 0 : -1;
     });
     document.getElementById('entry-story-panel').hidden = tab !== 'story';
     document.getElementById('entry-location-panel').hidden = tab !== 'location';
+    document.getElementById('entry-notes-panel').hidden = tab !== 'notes';
+    if (tab !== 'story') document.querySelector('#entry-photo video')?.pause();
     if (tab === 'location') {
-        document.querySelector('#entry-photo video')?.pause();
         showEntryLocation();
+        BrnoStories.locationContext(currentEntry);
     }
 }
 function hasExactLocation(entry) {
@@ -260,16 +252,19 @@ async function showEntryLocation() {
     }
 }
 entryTabs.forEach((button, i) => {
-    button.addEventListener('click', () => selectEntryTab(i === 0 ? 'story' : 'location'));
+    button.addEventListener('click', () => selectEntryTab(entryTabNames[i]));
     button.addEventListener('keydown', event => {
         let next;
-        if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') next = 1 - i;
+        if (event.key === 'ArrowRight') next = (i + 1) % entryTabs.length;
+        else if (event.key === 'ArrowLeft') next = (i + entryTabs.length - 1) % entryTabs.length;
         else if (event.key === 'Home') next = 0;
-        else if (event.key === 'End') next = 1;
+        else if (event.key === 'End') next = entryTabs.length - 1;
         else return;
-        event.preventDefault(); entryTabs[next].focus(); selectEntryTab(next === 0 ? 'story' : 'location');
+        event.preventDefault(); entryTabs[next].focus(); selectEntryTab(entryTabNames[next]);
     });
 });
 document.getElementById('entry-map-retry').addEventListener('click', showEntryLocation);
 journalDialog.addEventListener('close', () => { ++locationVersion; document.querySelector('#entry-photo video')?.pause(); });
 renderJournal();
+const linkedEntry=BrnoStories.byId(new URLSearchParams(location.search).get('story'));
+if(linkedEntry)openEntry(linkedEntry);

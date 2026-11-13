@@ -56,16 +56,45 @@ The livability page defaults to **Residential access**, with the original
 **Land area** view available above the map. Score overlays still start off.
 Residential mode uses KAM Brno's 2018–2020 housing-floor-area data and estimated
 internal building origins on the existing walking network. It is not population
-coverage or verified entrance routing. The derived 250 m grid and cadastral
+coverage or verified entrance routing. The derived north-aligned grid (approximately 250 m cells) and cadastral
 summaries are in `data/residential/` and must be uploaded with the site, together
 with `residential-access.js` and `residential-access.css`.
 
-Residential overall includes eight walking-access factors. Trees, park area and
-cycling density remain cadastral context outside that overall; rental cost also
-remains at cadastral scale. Switching views changes the score definition, not
+Residential overall includes ten walking-access factors, including access to parks
+and cycling routes within a 500 m walk. Trees remain cadastral greenness context
+outside that overall; rental cost also remains at cadastral scale. Switching views changes the score definition, not
 just its map resolution. Social-service coverage in residential mode is an
 absolute share rather than a score rescaled against the best area.
 
 The original GeoPackage, building-level audit, reproducible analysis and QGIS
 point output remain in `_local-only/`. See
 `_local-only/analysis/RESIDENTIAL.md` for assumptions and reproduction.
+
+## Stories and neighbourhood context
+
+`journal-data.js` is the shared catalogue for Life in Brno and the livability
+page. Edit story text, images, categories and mapped visit locations there.
+Stories describe visits and activities, not residential experience across every
+neighbourhood. Undocumented areas are not scored lower.
+
+The Location tab shows saved walking estimates to transit, parks and groceries,
+plus the area's rental-cost band. These are calculated from the mapped visit
+location, not from residential grid averages. To regenerate them after changing
+story locations, routing data or rental data, run:
+
+```sh
+node _local-only/analysis/export_journal_context.cjs
+```
+
+Upload `journal-data.js`, `story-links.js`, `story-links.css` and
+`data/journal-context.json` alongside the updated pages/scripts. The journal uses
+the small saved context file, avoiding a full network download just to open a
+story. Missing or changed locations show an unavailable message until rebuilt.
+Deep links use `?story=<entry-id>`: the journal opens the story, and the livability
+map selects its area and places a walking-start pin at its mapped location.
+
+Optional `observations` in each `journal-data.js` entry appear in the **Visit Notes**
+tab: `visitDate`, `visitTime`, `cost`, `comfort` (seating, shade and
+shelter), `walking`, and `suitedTo` (personal impression). Fill in the quoted
+strings and leave unknown details empty. Empty fields are hidden; an empty tab says that no notes have been added yet. Notes do not change map scores; editing them does not require
+regenerating `journal-context.json`.

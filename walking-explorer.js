@@ -1,7 +1,7 @@
 function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
     map.createPane('walkingRoutes').style.zIndex = 460;
     const labels={transit:'Transit stops',food:'Cafés & restaurants',socialservice:'Social services',kg:'Kindergartens',sklcol:'Schools / colleges',uni:'Universities',learning:'Learning locations',grocery:'Grocery stores',fitness:'Fitness & wellness',cultural:'Cultural locations',parks:'Parks & green spaces',cycling:'Cycling-route access'};
-    const thresholds={transit:400,food:500,socialservice:400,kg:800,sklcol:1500,uni:2000,learning:800,grocery:500,fitness:800,cultural:1000};
+    const thresholds={transit:400,food:500,socialservice:400,kg:800,sklcol:1500,uni:2000,learning:800,grocery:500,fitness:800,cultural:1000,parks:500,cycling:500};
     const factors={transit_cov_score:['transit'],food_cov_score:['food'],socialservice_cov_score:['socialservice'],edu_score:['kg','sklcol','uni'],learning_cov_score:['learning'],grocery_cov_score:['grocery'],fitness_cov_score:['fitness'],cultural_cov_score:['cultural'],park_score:['parks'],cycling_dens_score:['cycling']};
     const status=document.getElementById('walk-status'),results=document.getElementById('walk-results');
     const pinButton=document.getElementById('drop-pin'),clearButton=document.getElementById('clear-pin');
@@ -132,5 +132,5 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
         const point={lat:Number(r.lat),lng:Number(r.lon)};setOrigin(point,r.display_name);map.setView(point,16);
         addressResults.replaceChildren();addressStatus.textContent='Address selected. Drag the pin to refine the starting point.';
     });
-    return {setFactor(factor){currentFactor=factor;render();}};
+    return {setOrigin,setFactor(factor){currentFactor=factor;render();}};
 }

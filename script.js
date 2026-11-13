@@ -113,6 +113,8 @@ function styleFeature(feature) {
 
     const selectedIndex = selectedAreas.indexOf(areaId(feature.properties));
     return {
+        // With the grid visible, draw only strokes so cell interiors stay clickable.
+        fill: !globalThis.ResidentialAccess?.gridVisible,
         fillColor: currentFactor === 'affordability' ? (rentBand(rentRecord(feature.properties))?.color || '#b8b8b8') : getColor(score),
         weight: selectedIndex >= 0 ? 3.5 : 1.5,
         color: selectedIndex >= 0 ? selectionColors[selectedIndex] : (showScoreOverlay && !globalThis.ResidentialAccess?.gridVisible ? '#ffffff' : '#666666'),
@@ -168,6 +170,7 @@ function refreshSelectionStyles() {
 }
 
 function renderComparison() {
+    globalThis.BrnoStories?.renderAreas();
     globalThis.ResidentialAccess?.render();
     globalThis.BrnoMobile?.sync();
     const exploreLocation = locationMode && currentFactor !== 'affordability';
@@ -216,7 +219,7 @@ function renderComparison() {
                 ${field === 'overall_score' ? `<span class="score-rank">${overallRank(areas[i])}</span>` : ''}
             </td>`;
         }).join('');
-        const rowLabel = globalThis.ResidentialAccess?.active && ['tree_score','park_score','cycling_dens_score'].includes(field) ? `${label} · area context` : label;
+        const rowLabel = globalThis.ResidentialAccess?.active && field === 'tree_score' ? `${label} · area context` : label;
         return `<tr${field === currentFactor ? ' class="current-factor"' : ''}><th scope="row">${rowLabel}</th>${cells}</tr>`;
     }).join('');
     document.getElementById('score-comparison').innerHTML = `
@@ -237,7 +240,7 @@ function showAreaPopup(layer) {
     const scoreText = Number.isFinite(score) ? `${scoreToFive(score)} / 5` : 'Not available';
     layer.setPopupContent(`<div class="score-popup">
         <strong>${escapeHtml(p.Name)}</strong>
-        <div class="popup-factor">${globalThis.ResidentialAccess?.active && currentFactor === 'overall_score' ? 'Residential access' : factorLabels[currentFactor]}</div>
+        <div class="popup-factor">${globalThis.ResidentialAccess?.applies(currentFactor) ? ResidentialAccess.label(currentFactor) : factorLabels[currentFactor]}</div>
         <div class="popup-rating">${getRatingBlocks(score)}</div>
         <div class="popup-score">${scoreText}</div>
         ${currentFactor === 'overall_score' ? `<div class="score-rank">${overallRank(p)}</div>` : ''}
@@ -520,7 +523,10 @@ Promise.all([fetch(networkDataUrl), fetch('data/rent/relative_rent.json').then(r
             throw new Error('Expected network livability results');
         }
 
+        // Above residential cells (410), below destination markers and routes.
+        map.createPane('cadastralAreas').style.zIndex = 420;
         livabilityLayer = L.geoJSON(data, {
+            pane: 'cadastralAreas',
 
             style: styleFeature,
 
@@ -600,6 +606,7 @@ Promise.all([fetch(networkDataUrl), fetch('data/rent/relative_rent.json').then(r
         });
 
     })
+    .then(() => { globalThis.BrnoStories?.openLinkedStory(); })
     .catch(error => {
         console.error('Unable to load network livability results:', error);
         document.getElementById('map-status').textContent =
