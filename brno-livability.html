@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="mobile.css?v=20261104">
     <link rel="stylesheet" href="residential-access.css?v=20261110">
     <link rel="stylesheet" href="story-links.css?v=20261113">
+    <link rel="stylesheet" href="explorer-tabs.css?v=20261115-slim">
 </head>
 
 <body class="livability-page">
@@ -74,6 +75,20 @@
                 <p id="pin-status" class="search-status" role="status"></p>
             </details>
 
+            <section id="overall-card" class="overall-card" aria-labelledby="overall-area-name">
+                <div class="comparison-heading">
+                    <h3 id="overall-area-name">Explore an area</h3>
+                    <button id="clear-selection" type="button" hidden>Clear</button>
+                    <button id="clear-pin" type="button" hidden>Clear location</button>
+                </div>
+                <p id="selection-status" class="selection-status" role="status">Click an area or search by name. Select a second area to compare.</p>
+                <div id="selected-areas" class="selected-areas"></div>
+                <div class="explorer-tabs" role="tablist" aria-label="Explore Brno">
+                    <button id="overview-tab" role="tab" aria-selected="true" aria-controls="overview-panel" data-explorer-tab="overview" disabled>Overview</button>
+                    <button id="essentials-tab" role="tab" aria-selected="false" aria-controls="essentials-panel" data-explorer-tab="essentials" tabindex="-1" disabled>My essentials</button>
+                    <button id="life-tab" role="tab" aria-selected="false" aria-controls="life-panel" data-explorer-tab="life" tabindex="-1" disabled>Life here</button>
+                </div>
+                <div id="overview-panel" role="tabpanel" aria-labelledby="overview-tab">
             <div class="filters">
 
                 <!-- Row 1 -->
@@ -146,7 +161,7 @@
             </div>
 
             <details class="priorities">
-                <summary>Your Priority <span class="priority-prompt">Which factors matter to you most?</span></summary>
+                <summary>Adjust priorities</summary>
                 <p>Increase formal education for school access, or cafés and culture for places to go out. These choices change the overall score.</p>
                 <p class="priority-guide">Off · Standard · More important · Most important</p>
                 <div id="priority-controls"></div>
@@ -154,18 +169,9 @@
                 <p id="priority-status" role="status" aria-live="polite">Loading priorities…</p>
             </details>
 
-            <section id="overall-card" class="overall-card" aria-labelledby="overall-area-name">
-                <div class="comparison-heading">
-                    <h3 id="overall-area-name">Explore an area</h3>
-                    <button id="clear-selection" type="button" hidden>Clear</button>
-                    <button id="clear-pin" type="button" hidden>Clear location</button>
-                </div>
                 <div id="area-results">
                 <div id="residential-results" hidden></div>
-                <p id="selection-status" class="selection-status" role="status">Click an area or search by name. Select a second area to compare.</p>
-                <div id="selected-areas" class="selected-areas"></div>
                 <div id="score-comparison"></div>
-                <section id="area-stories" aria-label="Journal visits in selected areas" hidden></section>
                 </div>
                 <div id="location-results" hidden>
                 <p id="walk-origin"></p>
@@ -174,6 +180,25 @@
                 <div id="walk-results"></div>
                 <p id="route-caption" class="search-status"></p>
                 <p class="search-status">Estimated walking routes include steps and approximate connections up to 100 m. Entrances and barriers may be incomplete; these are not verified accessible routes.</p>
+                </div>
+                </div>
+                <div id="essentials-panel" role="tabpanel" aria-labelledby="essentials-tab" hidden>
+                    <p class="essentials-intro">Choose the needs you want within walking distance of the same home.</p>
+                    <div id="essentials-choices" class="essentials-choices" role="group" aria-label="Choose everyday needs"></div>
+                    <details class="essentials-method"><summary id="essentials-more-label">More needs</summary><div id="essentials-more-choices" class="essentials-choices" role="group" aria-label="Additional everyday needs"></div></details>
+                    <p id="essentials-status" role="status" aria-live="polite"></p>
+                    <button id="essentials-retry" type="button" hidden>Retry loading</button>
+                    <div id="essentials-results" aria-live="polite"></div>
+                    <details class="essentials-method"><summary>How this is calculated</summary>
+                        <p>Each residential origin must reach every selected need within its threshold. Coverage is weighted by housing floor area, not residents. Separate trips from home are measured, not a combined trip between destinations.</p>
+                        <p>Based on the 2018–2020 housing survey, estimated origins and the existing walking network. Unconnected origins count as no confirmed access. Opening hours, capacity, eligibility and accessible entrances are not verified.</p>
+                        <p>Missing needs can overlap. The most common missing need identifies a coverage gap, not proof that adding one facility would resolve all unmet needs. Priorities do not change this measure.</p>
+                    </details>
+                </div>
+                <div id="life-panel" role="tabpanel" aria-labelledby="life-tab" hidden>
+                    <p id="life-selection-hint">Select a cadastral area to find personal visits and stories. This journal is always a work in progress, not a complete account of living in each neighbourhood.</p>
+                    <section id="area-stories" aria-label="Journal visits in selected areas" hidden></section>
+                    <a class="story-map-link" href="life-in-brno.html">Browse all Life in Brno stories ↗</a>
                 </div>
             </section>
 
@@ -204,7 +229,8 @@
                 <h3>Residential park and cycling access</h3>
                 <p>Both use a 500 m walking threshold and the supplied Brno park polygons and cycling-route lines. Access candidates come from network overlaps and connections up to 100 m to these geometries, not verified entrances. Nine parks marked as restricted are excluded. Cycling measures access to mapped routes, not safety, cycling travel times or network connectivity. Three cycling features have no eligible network access candidates.</p>
                 <h3>How scores work</h3>
-                <p>In the original Land area view, eleven factors start equally weighted. “Your Priority” changes their contribution to the overall score; missing scores are omitted. Trees, parks and cycling retain their original density or area measures.</p>
+                <p><strong>My essentials</strong> checks whether every selected service is reachable from the same residential origin, then weights the result by housing floor area. It does not average separate coverages or use priority weights. An address/pin result instead counts the selected needs met at that location. Missing needs may overlap; the most common gap does not identify a single fix for every home.</p>
+                <p>In the original Land area view, eleven factors start equally weighted. “Adjust priorities” changes their contribution to the overall score; missing scores are omitted. Trees, parks and cycling retain their original density or area measures.</p>
                 <p>The original Land area view combines kindergarten (50%), school/college (35%) and university (15%) coverage. Social-service coverage is scaled against the highest-coverage area. These formulas were inferred from the original project and retained for this prototype.</p>
                 <h3>Fitness and school proximity</h3>
                 <p>Fitness locations within 100 m of the existing school points are excluded. All other supplied fitness records are retained, regardless of access tags. This approximates school overlap and does not confirm public access.</p>
@@ -324,14 +350,17 @@
     <!-- Our JavaScript -->
     <script src="about-data.js"></script>
     <script src="factor-locations.js"></script>
-    <script src="walking-explorer.js?v=20261113-stories"></script>
-    <script src="rent-comparison.js?v=20261103-rent-detail"></script>
-    <script src="residential-access.js?v=20261113-north-grid"></script>
-    <script src="journal-data.js?v=20261113-notes"></script>
-    <script src="story-links.js?v=20261113"></script>
-    <script src="script.js?v=20261113-stories"></script>
+    <script src="walking-explorer.js?v=20261115-tabs"></script>
+    <script src="rent-comparison.js?v=20261115-tabs"></script>
+    <script src="residential-access.js?v=20261115-tabs"></script>
+    <script src="journal-data.js?v=20261116-posts-restored"></script>
+    <script src="story-links.js?v=20261116-posts-restored"></script>
+    <script src="essentials-core.js?v=20261115"></script>
+    <script src="essentials.js?v=20261115-compact"></script>
+    <script src="explorer-tabs.js?v=20261115"></script>
+    <script src="script.js?v=20261115-essentials"></script>
 
-    <script src="mobile.js?v=20261104"></script>
+    <script src="mobile.js?v=20261115-tabs"></script>
 </body>
 
 </html>

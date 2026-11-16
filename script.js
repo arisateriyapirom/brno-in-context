@@ -114,11 +114,11 @@ function styleFeature(feature) {
     const selectedIndex = selectedAreas.indexOf(areaId(feature.properties));
     return {
         // With the grid visible, draw only strokes so cell interiors stay clickable.
-        fill: !globalThis.ResidentialAccess?.gridVisible,
+        fill: !(globalThis.BrnoEssentials?.active || globalThis.ResidentialAccess?.gridVisible),
         fillColor: currentFactor === 'affordability' ? (rentBand(rentRecord(feature.properties))?.color || '#b8b8b8') : getColor(score),
         weight: selectedIndex >= 0 ? 3.5 : 1.5,
-        color: selectedIndex >= 0 ? selectionColors[selectedIndex] : (showScoreOverlay && !globalThis.ResidentialAccess?.gridVisible ? '#ffffff' : '#666666'),
-        fillOpacity: globalThis.ResidentialAccess?.gridVisible ? 0 : showScoreOverlay ? (selectedIndex >= 0 ? 0.85 : 0.7) : 0
+        color: selectedIndex >= 0 ? selectionColors[selectedIndex] : (showScoreOverlay && !(globalThis.BrnoEssentials?.active || globalThis.ResidentialAccess?.gridVisible) ? '#ffffff' : '#666666'),
+        fillOpacity: (globalThis.BrnoEssentials?.active || globalThis.ResidentialAccess?.gridVisible) ? 0 : showScoreOverlay ? (selectedIndex >= 0 ? 0.85 : 0.7) : 0
     };
 }
 
@@ -167,13 +167,15 @@ function refreshSelectionStyles() {
     livabilityLayer.setStyle(styleFeature);
     selectedAreas.forEach(id => areaLayers.get(id).bringToFront());
     globalThis.ResidentialAccess?.refresh();
+    globalThis.BrnoEssentials?.refresh();
 }
 
 function renderComparison() {
+    globalThis.BrnoEssentials?.render();
     globalThis.BrnoStories?.renderAreas();
     globalThis.ResidentialAccess?.render();
     globalThis.BrnoMobile?.sync();
-    const exploreLocation = locationMode && currentFactor !== 'affordability';
+    const exploreLocation = locationMode && (currentFactor !== 'affordability' || Boolean(globalThis.BrnoEssentials?.active));
     document.getElementById('area-results').hidden = exploreLocation;
     document.getElementById('location-results').hidden = !exploreLocation;
     if (exploreLocation) {
@@ -230,6 +232,7 @@ function renderComparison() {
 }
 
 function showAreaPopup(layer) {
+    if (globalThis.BrnoEssentials?.active) { BrnoEssentials.popup(layer); return; }
     const p = layer.feature.properties;
     if (currentFactor === 'affordability') {
         layer.setPopupContent(`<div class="score-popup">${rentCard(p)}<small>August 2026 · two-room reference apartment</small></div>`);
@@ -253,8 +256,9 @@ function selectArea(id, focusMap = false) {
     const layer = areaLayers.get(id);
     if (!layer) return;
     globalThis.ResidentialAccess?.clearCell();
+    globalThis.BrnoEssentials?.clearCell();
     const mobileComparing = globalThis.BrnoMobile?.comparing;
-    if (globalThis.BrnoMobile?.active && locationMode) document.getElementById('clear-pin').click();
+    if ((globalThis.BrnoMobile?.active || globalThis.BrnoEssentials?.active) && locationMode) document.getElementById('clear-pin').click();
     if (globalThis.BrnoMobile?.active && !mobileComparing) selectedAreas = [id];
     if (!selectedAreas.includes(id)) {
         if (selectedAreas.length === 2) selectedAreas[1] = id;
@@ -366,6 +370,7 @@ function setupAreaControls() {
     });
     document.getElementById('clear-selection').addEventListener('click', () => {
         globalThis.ResidentialAccess?.clearCell();
+    globalThis.BrnoEssentials?.clearCell();
         selectedAreas = [];
         map.closePopup();
         refreshSelectionStyles();
@@ -549,6 +554,7 @@ Promise.all([fetch(networkDataUrl), fetch('data/rent/relative_rent.json').then(r
         setupAreaControls();
         setupPriorities();
         globalThis.ResidentialAccess?.init();
+        globalThis.ExplorerTabs?.init();
         document.getElementById('show-score-overlay').disabled = false;
         map.fitBounds(livabilityLayer.getBounds());
         document.getElementById('map-status').textContent =
@@ -623,7 +629,7 @@ function highlightFeature(e) {
     layer.setStyle({
         weight: selectedIndex >= 0 ? 4.5 : 2,
         color: selectedIndex >= 0 ? selectionColors[selectedIndex] : '#222222',
-        fillOpacity: globalThis.ResidentialAccess?.gridVisible ? 0 : showScoreOverlay ? 0.85 : 0
+        fillOpacity: (globalThis.BrnoEssentials?.active || globalThis.ResidentialAccess?.gridVisible) ? 0 : showScoreOverlay ? 0.85 : 0
     });
 
     layer.bringToFront();

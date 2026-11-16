@@ -98,3 +98,34 @@ tab: `visitDate`, `visitTime`, `cost`, `comfort` (seating, shade and
 shelter), `walking`, and `suitedTo` (personal impression). Fill in the quoted
 strings and leave unknown details empty. Empty fields are hidden; an empty tab says that no notes have been added yet. Notes do not change map scores; editing them does not require
 regenerating `journal-context.json`.
+
+## Overview, essentials and stories
+
+The explorer has three tabs inside the existing desktop sidebar/mobile bottom
+panel. Search stays available above them (in the Search control on mobile).
+Overview contains factors, collapsible priorities, scores and rental context.
+Life here contains journal links and explicitly identifies undocumented areas.
+
+My essentials requires every selected service to be within its existing walking
+threshold from the **same residential origin**. It uses housing floor area, not
+population, and does not average the separate factor percentages. Groceries,
+parks and transit are selected initially. Common needs appear first; others are
+under More needs. No needs selected produces no coverage score. At a searched
+address/pin, the result is the count of needs met, not a housing-area percentage.
+
+`data/residential/essentials.json` stores aggregated joint-access masks, without
+individual building coordinates. Regenerate after residential analysis changes:
+
+```sh
+PROJ_DATA=/Applications/QGIS-final-4_2_3.app/Contents/Resources/qgis/proj \
+GDAL_DATA=/Applications/QGIS-final-4_2_3.app/Contents/Resources/qgis/gdal \
+/Applications/QGIS-final-4_2_3.app/Contents/MacOS/python _local-only/analysis/export_essentials.py
+```
+
+The export validates each single-need coverage against the residential results.
+My essentials temporarily replaces the map with combined coverage and a percent
+legend. Leaving it restores the prior factor, analysis basis and overlay state.
+The most commonly missing need is descriptive: missing needs can overlap, and
+fixing one does not guarantee that every other need is met. Priorities are
+separate and do not change this conjunction. Entrances, source completeness,
+capacity and opening-hour limitations still apply.

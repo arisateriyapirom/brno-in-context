@@ -9,7 +9,7 @@
     const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     let contextPromise,request=0;
     function loadContext(){
-        if(!contextPromise)contextPromise=fetch('data/journal-context.json?v=20261113').then(r=>{if(!r.ok)throw Error('Context unavailable');return r.json();}).catch(error=>{contextPromise=null;throw error;});
+        if(!contextPromise)contextPromise=fetch('data/journal-context.json?v=20261116-posts-restored').then(r=>{if(!r.ok)throw Error('Context unavailable');return r.json();}).catch(error=>{contextPromise=null;throw error;});
         return contextPromise;
     }
     async function locationContext(entry){
@@ -38,7 +38,8 @@
     }
     function renderAreas(){
         const box=document.getElementById('area-stories');if(!box)return;
-        box.hidden=!selectedAreas.length||(locationMode&&currentFactor!=='affordability');
+        box.hidden=!selectedAreas.length||(!globalThis.ExplorerTabs&&locationMode&&currentFactor!=='affordability');
+        const hint=document.getElementById('life-selection-hint');if(hint)hint.hidden=selectedAreas.length>0;
         if(box.hidden)return;
         box.innerHTML='<h3>Visits & stories from this area</h3><p class="story-note">A growing collection of personal visits, food, activities and moments—not an account of living in every neighbourhood. Story coverage does not affect scores.</p>'+selectedAreas.map(id=>{
             const name=areaLayers.get(id).feature.properties.Name,entries=published().filter(e=>e.area===name);

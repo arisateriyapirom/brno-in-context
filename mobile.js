@@ -22,7 +22,7 @@
     handle.innerHTML='<button type="button" id="mobile-sheet-toggle" aria-expanded="false">Area details ↑</button><button type="button" id="mobile-sheet-expand">Expand</button><button type="button" id="mobile-sheet-map">Map ↓</button>';
     sidebar.prepend(handle);
     const compare=document.createElement('button');compare.type='button';compare.className='mobile-compare';compare.textContent='Compare with another area';compare.hidden=true;
-    document.getElementById('area-results').prepend(compare);
+    document.getElementById('selection-status').after(compare);
     const hint=document.createElement('p');hint.className='mobile-map-hint';hint.hidden=true;hint.setAttribute('role','status');toolbar.after(hint);
     const targets=[['#area-search-form','search'],['.walking-explorer','search'],['.filters','factors'],['.priorities','priorities'],['.map-footer','details']].map(([selector,slot])=>{
         const el=document.querySelector(selector),mark=document.createComment(`desktop slot ${selector}`);el.before(mark);return {el,mark,slot,open:el.open};
@@ -41,6 +41,7 @@
     }
     function openTool(tool,opener){
         if(!media.matches)return;
+        if(tool==='factors'||tool==='priorities')globalThis.ExplorerTabs?.select('overview');
         toolOpener=opener;dialog.dataset.tool=tool;
         dialog.querySelectorAll('[data-slot]').forEach(el=>el.hidden=el.dataset.slot!==tool);
         dialog.querySelector('.mobile-search-tabs').hidden=tool!=='search';

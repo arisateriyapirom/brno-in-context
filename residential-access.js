@@ -22,18 +22,18 @@
         const selected=factorKey[currentFactor] && s.factors[factorKey[currentFactor]];
         const cellAreas=s.area_ids ? `<p>Cell spans: ${s.area_ids.map(id=>escapeHtml(areaLayers.get(id)?.feature.properties.Name||id)).join(', ')}. Area selection follows the largest housing-floor-area share.</p>` : '';
         return `<h3>${escapeHtml(title)}</h3><p>${s.buildings.toLocaleString()} surveyed building features · ${(s.housing_m2/1000).toLocaleString(undefined,{maximumFractionDigits:1})} thousand m² of housing</p>
-            ${cellAreas}<table class="residential-table"><caption>Housing floor area with confirmed walking access</caption><thead><tr><th>Destination</th><th>Coverage</th></tr></thead><tbody>${rows}</tbody></table>
+            ${cellAreas}${currentFactor==='overall_score'?'<details><summary>Walking coverage by need</summary>':''}<table class="residential-table"><caption>Housing floor area with confirmed walking access</caption><thead><tr><th>Destination</th><th>Coverage</th></tr></thead><tbody>${rows}</tbody></table>${currentFactor==='overall_score'?'</details>':''}
             ${selected ? `<p>${Number.isFinite(selected.median_m_within_5km) ? `Median distance: <strong>${Math.round(selected.median_m_within_5km).toLocaleString()} m</strong>` : 'No destination found within 5 km'}. Median covers only the ${selected.within_5km_pct.toFixed(1)}% of housing floor area with a reachable destination within 5 km.</p>` : ''}
             <p class="residential-note">${s.connected_pct.toFixed(2)}% of housing floor area connects to the network within 100 m. Unconnected origins count as no confirmed access. These are floor-area shares, not resident counts.</p>`;
     }
     function refreshText() {
-        if (!active) return;
+        if (!active || globalThis.BrnoEssentials?.active) return;
         for(const field of ['tree_score']) document.getElementById(`weight-${field}`).disabled=true;
         const context=!isAccess();
         document.getElementById('factor-description').textContent=context
             ? `${factorDescriptions[currentFactor]} This is cadastral context; no residential-grid estimate is available for this factor.`
             : currentFactor==='overall_score'
-                ? 'Residential access combines ten walking-access factors using Your Priority. Trees remain a separate cadastral greenness measure. Cells summarise surveyed residential origins within ~250 m squares; cadastral summaries use the same housing floor-area weights.'
+                ? 'Residential access combines ten walking-access factors using your priorities. Trees remain a separate cadastral greenness measure. Cells summarise surveyed residential origins within ~250 m squares; cadastral summaries use the same housing floor-area weights.'
                 : currentFactor==='edu_score'
                     ? 'Residential education access combines kindergarten within 800 m (50%), school/college within 1,500 m (35%) and university within 2,000 m (15%). Coverage is weighted by housing floor area; origins are estimated, not verified entrances.'
                     : `${label[factorKey[currentFactor]]} within ${thresholds[factorKey[currentFactor]].toLocaleString()} m: share of surveyed housing floor area with walking access. Origins are estimated internal building points, not verified entrances.${currentFactor==='socialservice_cov_score'?' This is absolute coverage, not rescaled against the best area.':currentFactor==='park_score'?' Park connections are estimated from geometry, not verified entrances; sites marked restricted are excluded.':currentFactor==='cycling_dens_score'?' This measures walking access to a mapped cycling route, not cycling safety, route quality or network connectivity.':''}`;
@@ -53,7 +53,7 @@
     }
     function refresh() {
         if (!layer) return;
-        const visible=active && isAccess() && showScoreOverlay;
+        const visible=active && !globalThis.BrnoEssentials?.active && isAccess() && showScoreOverlay;
         if (visible && !map.hasLayer(layer)) layer.addTo(map);
         if (!visible && map.hasLayer(layer)) map.removeLayer(layer);
         if (visible) layer.setStyle(f=>({fillColor:getColor(score(f.properties)),fillOpacity:.7,color:'#fff',weight:.4}));
@@ -91,7 +91,7 @@
         } catch(error) {
             console.error(error);active=false;data=null;select().value='land';
             document.getElementById('residential-load-status').textContent='Residential data could not load. Choose Residential access to retry.';
-        } finally {select().disabled=false;}
+        } finally {select().disabled=Boolean(globalThis.BrnoEssentials?.active);}
     }
     window.ResidentialAccess={get active(){return active;},get gridVisible(){return active&&isAccess()&&showScoreOverlay;},
         init(){select().disabled=false;select().addEventListener('change',change);if(select().value==='residential')return change();},

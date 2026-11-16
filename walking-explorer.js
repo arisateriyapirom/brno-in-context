@@ -27,7 +27,8 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
         const destination=L.circleMarker(latlng(route.destination),{pane:'walkingRoutes',radius:8,color:'#fff',weight:2,fillColor:'#005cb9',fillOpacity:1});
         const text=document.createElement('div');text.textContent=`${route.name} · ${Math.round(route.distance)} m walk`;
         destination.bindPopup(text);
-        routeLayer=L.featureGroup([line,...connectors,destination]).addTo(map);
+        routeLayer=L.featureGroup([line,...connectors,destination]);
+        if(!globalThis.BrnoEssentials?.active)routeLayer.addTo(map);
         document.querySelectorAll('#walk-results button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.group===group&&Number(b.dataset.index)===index)));
         document.getElementById('route-caption').textContent=`${route.name}: ${Math.round(route.distance)} m estimated walk. Solid blue: network route. Dashed blue: approximate connections to the path.`;
         if(fit)map.fitBounds(routeLayer.getBounds(),{padding:[45,45],maxZoom:16});
@@ -48,21 +49,21 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
         worker.onmessage=({data})=>{
             if(data.id!==requestId)return;
             status.setAttribute('aria-busy','false');
-            if(data.error){status.textContent=data.error;retry.hidden=false;return;}
-            routeResult=data.result;
+            if(data.error){globalThis.BrnoEssentials?.setLocation(null,data.error);status.textContent=data.error;retry.hidden=false;return;}
+            routeResult=data.result;globalThis.BrnoEssentials?.setLocation(routeResult);
             status.textContent='The two closest reachable destinations per category, within 5 km. Select a destination to show its route.';
             retry.hidden=true;render();
         };
-        worker.onerror=()=>{status.setAttribute('aria-busy','false');worker.terminate();worker=null;status.textContent='Walking routes could not be calculated. Try again.';retry.hidden=false;};
+        worker.onerror=()=>{globalThis.BrnoEssentials?.setLocation(null,'Routing failed');status.setAttribute('aria-busy','false');worker.terminate();worker=null;status.textContent='Walking routes could not be calculated. Try again.';retry.hidden=false;};
     }
     function calculate(){
         if(!origin)return;
-        routeResult=null;clearRoute();results.innerHTML='';document.getElementById('route-caption').textContent='';retry.hidden=true;
+        routeResult=null;globalThis.BrnoEssentials?.setLocation(null);clearRoute();results.innerHTML='';document.getElementById('route-caption').textContent='';retry.hidden=true;
         status.setAttribute('aria-busy','true');
         status.textContent='Loading the walking network and calculating routes…';
         const id=++requestId;
         try{startWorker();worker.postMessage({id,point:[origin.lng,origin.lat]});}
-        catch(error){status.setAttribute('aria-busy','false');status.textContent='Routing is unavailable in this browser. Please try a browser with Web Worker support.';retry.hidden=false;}
+        catch(error){globalThis.BrnoEssentials?.setLocation(null,'Routing unavailable');status.setAttribute('aria-busy','false');status.textContent='Routing is unavailable in this browser. Please try a browser with Web Worker support.';retry.hidden=false;}
     }
     function setOrigin(point,label='Dropped pin'){
         setPinMode(false);origin={lat:point.lat,lng:point.lng};
@@ -85,7 +86,7 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&pinMode){setPinMode(false);pinStatus.textContent='Pin placement cancelled.';}});
     clearButton.addEventListener('click',()=>{
         status.setAttribute('aria-busy','false');
-        ++requestId;origin=null;routeResult=null;setPinMode(false);clearRoute();
+        ++requestId;origin=null;routeResult=null;globalThis.BrnoEssentials?.setLocation(null);setPinMode(false);clearRoute();
         if(pin){map.removeLayer(pin);pin=null;}results.innerHTML='';clearButton.hidden=true;retry.hidden=true;
         document.getElementById('walk-origin').textContent='';document.getElementById('route-caption').textContent='';
         status.textContent='Search an address or drop a pin to explore walking routes.';
@@ -132,5 +133,5 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
         const point={lat:Number(r.lat),lng:Number(r.lon)};setOrigin(point,r.display_name);map.setView(point,16);
         addressResults.replaceChildren();addressStatus.textContent='Address selected. Drag the pin to refine the starting point.';
     });
-    return {setOrigin,setFactor(factor){currentFactor=factor;render();}};
+    return {setOrigin,setRoutesVisible(visible){if(!routeLayer)return;if(visible&&!map.hasLayer(routeLayer))routeLayer.addTo(map);if(!visible&&map.hasLayer(routeLayer))map.removeLayer(routeLayer);},setFactor(factor){currentFactor=factor;render();}};
 }

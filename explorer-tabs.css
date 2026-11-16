@@ -1,0 +1,29 @@
+.sidebar > .walking-explorer { margin-bottom: 8px; }
+.sidebar > .overall-card { margin-top: 0; }
+.explorer-tabs { display: flex; gap: 4px; margin: 4px 0 6px; position: sticky; top: 0; z-index: 3; padding: 0; border-bottom: 1px solid #c4c9bd; background: #f5f3ef; }
+.explorer-tabs button { flex: 0 0 auto; position: relative; bottom: -1px; min-height: 26px; padding: 3px 12px; border: 1px solid #c4c9bd; border-radius: 8px 8px 0 0; font: inherit; font-size: 12px; background: #dcded3; color: #4d5846; cursor: pointer; }
+.explorer-tabs button[aria-selected="true"] { background: #f5f3ef; border-bottom-color: #f5f3ef; color: #253f2b; font-weight: bold; }
+#overview-panel > .filters { margin: 10px 0; }
+#overview-panel > .priorities { margin: 14px 0; }
+#overview-panel[hidden],#essentials-panel[hidden],#life-panel[hidden] { display: none !important; }
+.essentials-intro,#life-selection-hint { font-size: 13px; line-height: 1.6; }
+.essentials-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+.essentials-choices button { flex: 0 0 auto; border: 1px solid #222; border-radius: 20px; background: transparent; padding: 4px 10px; min-height: 28px; cursor: pointer; font: inherit; font-size: 12px; }
+.essentials-choices button[aria-pressed="true"] { background: #dbeafe; border-color: #93c5fd; }
+.essentials-choices small { margin-left: 5px; font-size: 10px; color: #636b5e; }
+.essentials-result { border-top: 1px solid #d6d9d0; padding: 14px 0; }
+.essentials-result h3 { font-size: 15px; margin: 6px 0; }
+.essentials-result .essential-number { font-size: 30px; font-weight: bold; margin: 12px 0 4px; }
+.essentials-result p,#essentials-status,.essentials-method { font-size: 12px; line-height: 1.6; }
+.essentials-result ul { padding-left: 20px; font-size: 12px; line-height: 1.8; }
+.essentials-result summary,.essentials-method summary { cursor: pointer; padding: 8px 0; font-size: 12px; }
+#clear-essential-cell,#essentials-retry { min-height: 44px; padding: 8px; margin: 8px 0; border: 1px solid #c7ccbf; background: transparent; border-radius: 6px; }
+#life-panel #area-stories { border: 0; margin-top: 0; padding-top: 0; }
+body[data-explorer-tab="essentials"] #mobile-factor { font-size: 0; }
+body[data-explorer-tab="essentials"] #mobile-factor::after { content: 'Factor map'; font-size: 12px; }
+@media(max-width:760px) { .explorer-tabs { top: 61px; } .essentials-result p { font-size: 13px; } }
+
+#overview-panel .comparison-table thead { top: 27px; }
+@media(max-width:760px) { #overview-panel .comparison-table thead { top: 92px; } }
+
+@media(max-width:760px) { .explorer-tabs button { min-height: 30px; padding: 3px 10px; } .essentials-choices button { min-height: 36px; } }

@@ -103,6 +103,7 @@ function renderObservations(entry) {
 }
 function openEntry(entry) {
     currentEntry = entry;
+    journalDialog.classList.toggle('journal-dialog-escobar', entry.id === 'bar-escobar');
     document.getElementById('entry-photo').replaceChildren(photoContent(entry, true));
     document.getElementById('entry-status').textContent = entry.draft ? 'Draft · writing prompt' : 'From the journal';
     document.getElementById('entry-title').textContent = entry.title;

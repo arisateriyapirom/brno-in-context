@@ -62,6 +62,96 @@
           "distance_m": 277
         }
       }
+    },
+    "4pokoj": {
+      "area_id": "610003",
+      "area_name": "Město Brno",
+      "location": {
+        "lat": 49.1957508,
+        "lng": 16.6118235
+      },
+      "rent": {
+        "name": "Město Brno",
+        "reference_rent": 324,
+        "coverage_class": 5,
+        "interval_low": 310,
+        "interval_high": 338,
+        "difference_pct": 7.462686567164178
+      },
+      "nearby": {
+        "transit": {
+          "name": "Malinovského náměstí",
+          "distance_m": 181
+        },
+        "parks": {
+          "name": "Před Mahenovým divadlem",
+          "distance_m": 179
+        },
+        "grocery": {
+          "name": "Lidl",
+          "distance_m": 239
+        }
+      }
+    },
+    "bar-escobar": {
+      "area_id": "610470",
+      "area_name": "Žabovřesky",
+      "location": {
+        "lat": 49.2121506,
+        "lng": 16.5804313
+      },
+      "rent": {
+        "name": "Žabovřesky",
+        "reference_rent": 303,
+        "coverage_class": 5,
+        "interval_low": 291,
+        "interval_high": 316,
+        "difference_pct": 0.4975124378109541
+      },
+      "nearby": {
+        "transit": {
+          "name": "Burianovo náměstí",
+          "distance_m": 133
+        },
+        "parks": {
+          "name": "Burianovo náměstí",
+          "distance_m": 115
+        },
+        "grocery": {
+          "name": "Dobrej Špajz",
+          "distance_m": 180
+        }
+      }
+    },
+    "veveri-walk": {
+      "area_id": "610372",
+      "area_name": "Veveří",
+      "location": {
+        "lat": 49.2071046,
+        "lng": 16.5937143
+      },
+      "rent": {
+        "name": "Veveří",
+        "reference_rent": 305,
+        "coverage_class": 5,
+        "interval_low": 294,
+        "interval_high": 316,
+        "difference_pct": 1.1608623548922115
+      },
+      "nearby": {
+        "transit": {
+          "name": "Rybkova",
+          "distance_m": 168
+        },
+        "parks": {
+          "name": "Björnsonův sad",
+          "distance_m": 5
+        },
+        "grocery": {
+          "name": "Brněnka",
+          "distance_m": 269
+        }
+      }
     }
   }
 }

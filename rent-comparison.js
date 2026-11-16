@@ -62,6 +62,7 @@ function rentPanel(areas) {
         <a href="${rentalData.source_url}" target="_blank" rel="noopener">Source: Czech Ministry of Finance</a></details></section>`;
 }
 function updateRentLegend() {
+    if(globalThis.BrnoEssentials?.active){BrnoEssentials.legend();return;}
     const active=currentFactor==='affordability';
     const legend=document.getElementById('score-legend');
     legend.hidden=!showScoreOverlay;
