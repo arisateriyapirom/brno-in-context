@@ -171,6 +171,7 @@ function refreshSelectionStyles() {
 }
 
 function renderComparison() {
+    globalThis.BrnoSavedPlaces?.sync();
     globalThis.BrnoEssentials?.render();
     globalThis.BrnoStories?.renderAreas();
     globalThis.ResidentialAccess?.render();
@@ -612,7 +613,7 @@ Promise.all([fetch(networkDataUrl), fetch('data/rent/relative_rent.json').then(r
         });
 
     })
-    .then(() => { globalThis.BrnoStories?.openLinkedStory(); })
+    .then(() => { globalThis.BrnoSavedPlaces?.init(); globalThis.BrnoStories?.openLinkedStory(); })
     .catch(error => {
         console.error('Unable to load network livability results:', error);
         document.getElementById('map-status').textContent =

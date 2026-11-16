@@ -133,5 +133,5 @@ function createWalkingExplorer(map, { onLocationChange = () => {} } = {}) {
         const point={lat:Number(r.lat),lng:Number(r.lon)};setOrigin(point,r.display_name);map.setView(point,16);
         addressResults.replaceChildren();addressStatus.textContent='Address selected. Drag the pin to refine the starting point.';
     });
-    return {setOrigin,setRoutesVisible(visible){if(!routeLayer)return;if(visible&&!map.hasLayer(routeLayer))routeLayer.addTo(map);if(!visible&&map.hasLayer(routeLayer))map.removeLayer(routeLayer);},setFactor(factor){currentFactor=factor;render();}};
+    return {getOrigin(){return origin?{lat:origin.lat,lng:origin.lng}:null;},setOrigin,setRoutesVisible(visible){if(!routeLayer)return;if(visible&&!map.hasLayer(routeLayer))routeLayer.addTo(map);if(!visible&&map.hasLayer(routeLayer))map.removeLayer(routeLayer);},setFactor(factor){currentFactor=factor;render();}};
 }

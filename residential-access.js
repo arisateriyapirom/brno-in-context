@@ -93,7 +93,7 @@
             document.getElementById('residential-load-status').textContent='Residential data could not load. Choose Residential access to retry.';
         } finally {select().disabled=Boolean(globalThis.BrnoEssentials?.active);}
     }
-    window.ResidentialAccess={get active(){return active;},get gridVisible(){return active&&isAccess()&&showScoreOverlay;},
+    window.ResidentialAccess={async setBasis(value){select().value=value;await change();},get active(){return active;},get gridVisible(){return active&&isAccess()&&showScoreOverlay;},
         init(){select().disabled=false;select().addEventListener('change',change);if(select().value==='residential')return change();},
         score(p,field){return summary(p)?.scores[field]??null;},
         overall(p,weights){return overall(summary(p),weights);},

@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="residential-access.css?v=20261110">
     <link rel="stylesheet" href="story-links.css?v=20261113">
     <link rel="stylesheet" href="explorer-tabs.css?v=20261115-slim">
+    <link rel="stylesheet" href="saved-places.css?v=20261116">
 </head>
 
 <body class="livability-page">
@@ -61,6 +62,16 @@
                 <p id="search-status" class="search-status" role="status">Loading areas…</p>
                 <ul id="search-results" class="search-results" aria-label="Matching cadastral areas" hidden></ul>
             </form>
+
+            <div class="saved-tools">
+                <button id="save-place" type="button" disabled>Save this place</button>
+                <details id="saved-places"><summary>Saved places (<span id="saved-count">0</span>)</summary>
+                    <p>Saved only in this browser on this device. Clearing site data removes your list. Reopening uses current scores.</p>
+                    <p id="saved-empty">No saved places yet. Select an area or search an address to start.</p>
+                    <ul id="saved-list" aria-label="Saved places"></ul>
+                </details>
+                <p id="saved-status" role="status"></p>
+            </div>
 
             <details class="walking-explorer" open>
                 <summary>Walk from an address or pin</summary>
@@ -350,15 +361,16 @@
     <!-- Our JavaScript -->
     <script src="about-data.js"></script>
     <script src="factor-locations.js"></script>
-    <script src="walking-explorer.js?v=20261115-tabs"></script>
+    <script src="walking-explorer.js?v=20261116-saved"></script>
     <script src="rent-comparison.js?v=20261115-tabs"></script>
-    <script src="residential-access.js?v=20261115-tabs"></script>
+    <script src="residential-access.js?v=20261116-saved"></script>
     <script src="journal-data.js?v=20261116-posts-restored"></script>
     <script src="story-links.js?v=20261116-posts-restored"></script>
     <script src="essentials-core.js?v=20261115"></script>
-    <script src="essentials.js?v=20261115-compact"></script>
+    <script src="essentials.js?v=20261116-saved"></script>
     <script src="explorer-tabs.js?v=20261115"></script>
-    <script src="script.js?v=20261115-essentials"></script>
+    <script src="saved-places.js?v=20261116"></script>
+    <script src="script.js?v=20261116-saved"></script>
 
     <script src="mobile.js?v=20261115-tabs"></script>
 </body>
